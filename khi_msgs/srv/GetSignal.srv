@@ -1,0 +1,20 @@
+# Example
+#   > ros2 service call /khi_controller0/khi_service/get_signal khi_msgs/srv/GetSignal "{signal_numbers: [1, 2, 3, 4]}"
+#   requester: making request: khi_msgs.srv.GetSignal_Request(signal_numbers=[1, 2, 3, 4])
+#   response:
+#   khi_msgs.srv.GetSignal_Response(success=True, is_on=[False, False, True, False])
+#
+#   Note: The '0' in khi_controller0 changes according to controller_no specified in khi_bringup.launch.py.
+
+
+# Default setting range (depended on AS system setting)
+#   Output: 1~512
+#   Input: 1001~1512
+#   Internal: 2001~2512
+uint32[] signal_numbers
+
+---
+
+bool success
+
+bool[] is_on

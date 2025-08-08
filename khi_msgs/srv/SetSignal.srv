@@ -1,0 +1,26 @@
+# Example
+#   > ros2 service call /khi_controller0/khi_service/set_signal khi_msgs/srv/SetSignal "{signal_numbers: [5,6,7,8], is_on: [True,False,True,False]}"
+#   requester: making request: khi_msgs.srv.SetSignal_Request(signal_numbers=[5, 6, 7, 8], is_on=[True, False, True, False])
+#
+#   response:
+#   khi_msgs.srv.SetSignal_Response(success=True, error_code=0, error_msg='')
+#
+#   Note: The '0' in khi_controller0 changes according to controller_no specified in khi_bringup.launch.py.
+
+
+# Default setting range (depended on AS system setting)
+#   Output:   1~32      (up to 960 depending on AS settings)
+#   Internal: 2001~2960
+uint32[] signal_numbers
+
+bool[] is_on
+
+---
+
+bool success
+
+# If the signal setting fails, the error code that occures at that time will be stored.
+int32 error_code
+
+# The error message corresponding to the error code will be stored.
+string error_msg

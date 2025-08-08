@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:if value="${robot_name == 'bx300l-b001'}">
+    <xacro:property name="is_parallel" value="true"/>
+  </xacro:if>
+  <xacro:unless value="${robot_name == 'bx300l-b001'}">
+    <xacro:property name="is_parallel" value="false"/>
+  </xacro:unless>
+
+  <xacro:property name="mech_para_path" value="$(find khi_description)/config/$(arg robot_series)/$(arg robot_name)/mechanical_parameters.yaml"/>
+  <xacro:property name="mechanical_parameters" value="${xacro.load_yaml(mech_para_path)}"/>
+
+  <xacro:property name="link0_mass" value="${mechanical_parameters['link']['mass']['l0']}"/>
+  <xacro:property name="link1_mass" value="${mechanical_parameters['link']['mass']['l1']}"/>
+  <xacro:property name="link2_mass" value="${mechanical_parameters['link']['mass']['l2']}"/>
+  <xacro:property name="linkv_mass" value="${mechanical_parameters['link']['mass']['lv']}"/>
+  <xacro:property name="linkh_mass" value="${mechanical_parameters['link']['mass']['lh']}"/>
+  <xacro:property name="link3_mass" value="${mechanical_parameters['link']['mass']['l3']}"/>
+  <xacro:property name="link4_mass" value="${mechanical_parameters['link']['mass']['l4']}"/>
+  <xacro:property name="link5_mass" value="${mechanical_parameters['link']['mass']['l5']}"/>
+  <xacro:property name="link6_mass" value="${mechanical_parameters['link']['mass']['l6']}"/>
+
+  <xacro:property name="link0_mass_x" value="${mechanical_parameters['link']['center_of_mass']['l0']['x']}"/>
+  <xacro:property name="link0_mass_y" value="${mechanical_parameters['link']['center_of_mass']['l0']['y']}"/>
+  <xacro:property name="link0_mass_z" value="${mechanical_parameters['link']['center_of_mass']['l0']['z']}"/>
+
+  <xacro:property name="link1_mass_x" value="${mechanical_parameters['link']['center_of_mass']['l1']['x']}"/>
+  <xacro:property name="link1_mass_y" value="${mechanical_parameters['link']['center_of_mass']['l1']['y']}"/>
+  <xacro:property name="link1_mass_z" value="${mechanical_parameters['link']['center_of_mass']['l1']['z']}"/>
+
+  <xacro:property name="link2_mass_x" value="${mechanical_parameters['link']['center_of_mass']['l2']['x']}"/>
+  <xacro:property name="link2_mass_y" value="${mechanical_parameters['link']['center_of_mass']['l2']['y']}"/>
+  <xacro:property name="link2_mass_z" value="${mechanical_parameters['link']['center_of_mass']['l2']['z']}"/>
+
+  <xacro:property name="linkv_mass_x" value="${mechanical_parameters['link']['center_of_mass']['lv']['x']}"/>
+  <xacro:property name="linkv_mass_y" value="${mechanical_parameters['link']['center_of_mass']['lv']['y']}"/>
+  <xacro:property name="linkv_mass_z" value="${mechanical_parameters['link']['center_of_mass']['lv']['z']}"/>
+
+  <xacro:property name="linkh_mass_x" value="${mechanical_parameters['link']['center_of_mass']['lh']['x']}"/>
+  <xacro:property name="linkh_mass_y" value="${mechanical_parameters['link']['center_of_mass']['lh']['y']}"/>
+  <xacro:property name="linkh_mass_z" value="${mechanical_parameters['link']['center_of_mass']['lh']['z']}"/>
+
+  <xacro:property name="link3_mass_x" value="${mechanical_parameters['link']['center_of_mass']['l3']['x']}"/>
+  <xacro:property name="link3_mass_y" value="${mechanical_parameters['link']['center_of_mass']['l3']['y']}"/>
+  <xacro:property name="link3_mass_z" value="${mechanical_parameters['link']['center_of_mass']['l3']['z']}"/>
+
+  <xacro:property name="link4_mass_x" value="${mechanical_parameters['link']['center_of_mass']['l4']['x']}"/>
+  <xacro:property name="link4_mass_y" value="${mechanical_parameters['link']['center_of_mass']['l4']['y']}"/>
+  <xacro:property name="link4_mass_z" value="${mechanical_parameters['link']['center_of_mass']['l4']['z']}"/>
+
+  <xacro:property name="link5_mass_x" value="${mechanical_parameters['link']['center_of_mass']['l5']['x']}"/>
+  <xacro:property name="link5_mass_y" value="${mechanical_parameters['link']['center_of_mass']['l5']['y']}"/>
+  <xacro:property name="link5_mass_z" value="${mechanical_parameters['link']['center_of_mass']['l5']['z']}"/>
+
+  <xacro:property name="link6_mass_x" value="${mechanical_parameters['link']['center_of_mass']['l6']['x']}"/>
+  <xacro:property name="link6_mass_y" value="${mechanical_parameters['link']['center_of_mass']['l6']['y']}"/>
+  <xacro:property name="link6_mass_z" value="${mechanical_parameters['link']['center_of_mass']['l6']['z']}"/>
+
+  <xacro:property name="link0_ixx" value="${mechanical_parameters['link']['inertia']['l0']['ixx']}"/>
+  <xacro:property name="link0_ixy" value="${mechanical_parameters['link']['inertia']['l0']['ixy']}"/>
+  <xacro:property name="link0_ixz" value="${mechanical_parameters['link']['inertia']['l0']['ixz']}"/>
+  <xacro:property name="link0_iyy" value="${mechanical_parameters['link']['inertia']['l0']['iyy']}"/>
+  <xacro:property name="link0_iyz" value="${mechanical_parameters['link']['inertia']['l0']['iyz']}"/>
+  <xacro:property name="link0_izz" value="${mechanical_parameters['link']['inertia']['l0']['izz']}"/>
+
+  <xacro:property name="link1_ixx" value="${mechanical_parameters['link']['inertia']['l1']['ixx']}"/>
+  <xacro:property name="link1_ixy" value="${mechanical_parameters['link']['inertia']['l1']['ixy']}"/>
+  <xacro:property name="link1_ixz" value="${mechanical_parameters['link']['inertia']['l1']['ixz']}"/>
+  <xacro:property name="link1_iyy" value="${mechanical_parameters['link']['inertia']['l1']['iyy']}"/>
+  <xacro:property name="link1_iyz" value="${mechanical_parameters['link']['inertia']['l1']['iyz']}"/>
+  <xacro:property name="link1_izz" value="${mechanical_parameters['link']['inertia']['l1']['izz']}"/>
+
+  <xacro:property name="link2_ixx" value="${mechanical_parameters['link']['inertia']['l2']['ixx']}"/>
+  <xacro:property name="link2_ixy" value="${mechanical_parameters['link']['inertia']['l2']['ixy']}"/>
+  <xacro:property name="link2_ixz" value="${mechanical_parameters['link']['inertia']['l2']['ixz']}"/>
+  <xacro:property name="link2_iyy" value="${mechanical_parameters['link']['inertia']['l2']['iyy']}"/>
+  <xacro:property name="link2_iyz" value="${mechanical_parameters['link']['inertia']['l2']['iyz']}"/>
+  <xacro:property name="link2_izz" value="${mechanical_parameters['link']['inertia']['l2']['izz']}"/>
+
+  <xacro:property name="linkv_ixx" value="${mechanical_parameters['link']['inertia']['lv']['ixx']}"/>
+  <xacro:property name="linkv_ixy" value="${mechanical_parameters['link']['inertia']['lv']['ixy']}"/>
+  <xacro:property name="linkv_ixz" value="${mechanical_parameters['link']['inertia']['lv']['ixz']}"/>
+  <xacro:property name="linkv_iyy" value="${mechanical_parameters['link']['inertia']['lv']['iyy']}"/>
+  <xacro:property name="linkv_iyz" value="${mechanical_parameters['link']['inertia']['lv']['iyz']}"/>
+  <xacro:property name="linkv_izz" value="${mechanical_parameters['link']['inertia']['lv']['izz']}"/>
+
+  <xacro:property name="linkh_ixx" value="${mechanical_parameters['link']['inertia']['lh']['ixx']}"/>
+  <xacro:property name="linkh_ixy" value="${mechanical_parameters['link']['inertia']['lh']['ixy']}"/>
+  <xacro:property name="linkh_ixz" value="${mechanical_parameters['link']['inertia']['lh']['ixz']}"/>
+  <xacro:property name="linkh_iyy" value="${mechanical_parameters['link']['inertia']['lh']['iyy']}"/>
+  <xacro:property name="linkh_iyz" value="${mechanical_parameters['link']['inertia']['lh']['iyz']}"/>
+  <xacro:property name="linkh_izz" value="${mechanical_parameters['link']['inertia']['lh']['izz']}"/>
+
+  <xacro:property name="link3_ixx" value="${mechanical_parameters['link']['inertia']['l3']['ixx']}"/>
+  <xacro:property name="link3_ixy" value="${mechanical_parameters['link']['inertia']['l3']['ixy']}"/>
+  <xacro:property name="link3_ixz" value="${mechanical_parameters['link']['inertia']['l3']['ixz']}"/>
+  <xacro:property name="link3_iyy" value="${mechanical_parameters['link']['inertia']['l3']['iyy']}"/>
+  <xacro:property name="link3_iyz" value="${mechanical_parameters['link']['inertia']['l3']['iyz']}"/>
+  <xacro:property name="link3_izz" value="${mechanical_parameters['link']['inertia']['l3']['izz']}"/>
+
+  <xacro:property name="link4_ixx" value="${mechanical_parameters['link']['inertia']['l4']['ixx']}"/>
+  <xacro:property name="link4_ixy" value="${mechanical_parameters['link']['inertia']['l4']['ixy']}"/>
+  <xacro:property name="link4_ixz" value="${mechanical_parameters['link']['inertia']['l4']['ixz']}"/>
+  <xacro:property name="link4_iyy" value="${mechanical_parameters['link']['inertia']['l4']['iyy']}"/>
+  <xacro:property name="link4_iyz" value="${mechanical_parameters['link']['inertia']['l4']['iyz']}"/>
+  <xacro:property name="link4_izz" value="${mechanical_parameters['link']['inertia']['l4']['izz']}"/>
+
+  <xacro:property name="link5_ixx" value="${mechanical_parameters['link']['inertia']['l5']['ixx']}"/>
+  <xacro:property name="link5_ixy" value="${mechanical_parameters['link']['inertia']['l5']['ixy']}"/>
+  <xacro:property name="link5_ixz" value="${mechanical_parameters['link']['inertia']['l5']['ixz']}"/>
+  <xacro:property name="link5_iyy" value="${mechanical_parameters['link']['inertia']['l5']['iyy']}"/>
+  <xacro:property name="link5_iyz" value="${mechanical_parameters['link']['inertia']['l5']['iyz']}"/>
+  <xacro:property name="link5_izz" value="${mechanical_parameters['link']['inertia']['l5']['izz']}"/>
+
+  <xacro:property name="link6_ixx" value="${mechanical_parameters['link']['inertia']['l6']['ixx']}"/>
+  <xacro:property name="link6_ixy" value="${mechanical_parameters['link']['inertia']['l6']['ixy']}"/>
+  <xacro:property name="link6_ixz" value="${mechanical_parameters['link']['inertia']['l6']['ixz']}"/>
+  <xacro:property name="link6_iyy" value="${mechanical_parameters['link']['inertia']['l6']['iyy']}"/>
+  <xacro:property name="link6_iyz" value="${mechanical_parameters['link']['inertia']['l6']['iyz']}"/>
+  <xacro:property name="link6_izz" value="${mechanical_parameters['link']['inertia']['l6']['izz']}"/>
+
+  <xacro:property name="jt1_type" value="${mechanical_parameters['joint']['type']['j1']}"/>
+  <xacro:property name="jt2_type" value="${mechanical_parameters['joint']['type']['j2']}"/>
+  <xacro:property name="jt3_type" value="${mechanical_parameters['joint']['type']['j3']}"/>
+  <xacro:property name="jt4_type" value="${mechanical_parameters['joint']['type']['j4']}"/>
+  <xacro:property name="jt5_type" value="${mechanical_parameters['joint']['type']['j5']}"/>
+  <xacro:property name="jt6_type" value="${mechanical_parameters['joint']['type']['j6']}"/>
+  <xacro:if value="${is_parallel}">
+    <xacro:property name="parallel_jt1_type" value="${mechanical_parameters['joint']['type']['parallel_j1']}"/>
+    <xacro:property name="parallel_jt2_type" value="${mechanical_parameters['joint']['type']['parallel_j2']}"/>
+  </xacro:if>
+
+  <xacro:property name="l0_x" value="${mechanical_parameters['link']['length']['l0']['x']}"/>
+  <xacro:property name="l0_y" value="${mechanical_parameters['link']['length']['l0']['y']}"/>
+  <xacro:property name="l0_z" value="${mechanical_parameters['link']['length']['l0']['z']}"/>
+
+  <xacro:property name="l1_x" value="${mechanical_parameters['link']['length']['l1']['x']}"/>
+  <xacro:property name="l1_y" value="${mechanical_parameters['link']['length']['l1']['y']}"/>
+  <xacro:property name="l1_z" value="${mechanical_parameters['link']['length']['l1']['z']}"/>
+
+  <xacro:property name="l2_x" value="${mechanical_parameters['link']['length']['l2']['x']}"/>
+  <xacro:property name="l2_y" value="${mechanical_parameters['link']['length']['l2']['y']}"/>
+  <xacro:property name="l2_z" value="${mechanical_parameters['link']['length']['l2']['z']}"/>
+
+  <xacro:property name="lv_x" value="${mechanical_parameters['link']['length']['lv']['x']}"/>
+  <xacro:property name="lv_y" value="${mechanical_parameters['link']['length']['lv']['y']}"/>
+  <xacro:property name="lv_z" value="${mechanical_parameters['link']['length']['lv']['z']}"/>
+
+  <xacro:property name="lh_x" value="${mechanical_parameters['link']['length']['lh']['x']}"/>
+  <xacro:property name="lh_y" value="${mechanical_parameters['link']['length']['lh']['y']}"/>
+  <xacro:property name="lh_z" value="${mechanical_parameters['link']['length']['lh']['z']}"/>
+
+  <xacro:property name="ls_x" value="${mechanical_parameters['link']['length']['ls']['x']}"/>
+  <xacro:property name="ls_y" value="${mechanical_parameters['link']['length']['ls']['y']}"/>
+  <xacro:property name="ls_z" value="${mechanical_parameters['link']['length']['ls']['z']}"/>
+
+  <xacro:property name="l3_x" value="${mechanical_parameters['link']['length']['l3']['x']}"/>
+  <xacro:property name="l3_y" value="${mechanical_parameters['link']['length']['l3']['y']}"/>
+  <xacro:property name="l3_z" value="${mechanical_parameters['link']['length']['l3']['z']}"/>
+
+  <xacro:property name="l4_x" value="${mechanical_parameters['link']['length']['l4']['x']}"/>
+  <xacro:property name="l4_y" value="${mechanical_parameters['link']['length']['l4']['y']}"/>
+  <xacro:property name="l4_z" value="${mechanical_parameters['link']['length']['l4']['z']}"/>
+
+  <xacro:property name="l5_x" value="${mechanical_parameters['link']['length']['l5']['x']}"/>
+  <xacro:property name="l5_y" value="${mechanical_parameters['link']['length']['l5']['y']}"/>
+  <xacro:property name="l5_z" value="${mechanical_parameters['link']['length']['l5']['z']}"/>
+
+  <xacro:property name="l1_rpy_x" value="${mechanical_parameters['link']['rpy']['l1']['x']}"/>
+  <xacro:property name="l1_rpy_y" value="${mechanical_parameters['link']['rpy']['l1']['y']}"/>
+  <xacro:property name="l1_rpy_z" value="${mechanical_parameters['link']['rpy']['l1']['z']}"/>
+  <xacro:property name="l2_rpy_x" value="${mechanical_parameters['link']['rpy']['l2']['x']}"/>
+  <xacro:property name="l2_rpy_y" value="${mechanical_parameters['link']['rpy']['l2']['y']}"/>
+  <xacro:property name="l2_rpy_z" value="${mechanical_parameters['link']['rpy']['l2']['z']}"/>
+  <xacro:property name="l3_rpy_x" value="${mechanical_parameters['link']['rpy']['l3']['x']}"/>
+  <xacro:property name="l3_rpy_y" value="${mechanical_parameters['link']['rpy']['l3']['y']}"/>
+  <xacro:property name="l3_rpy_z" value="${mechanical_parameters['link']['rpy']['l3']['z']}"/>
+  <xacro:property name="l4_rpy_x" value="${mechanical_parameters['link']['rpy']['l4']['x']}"/>
+  <xacro:property name="l4_rpy_y" value="${mechanical_parameters['link']['rpy']['l4']['y']}"/>
+  <xacro:property name="l4_rpy_z" value="${mechanical_parameters['link']['rpy']['l4']['z']}"/>
+  <xacro:property name="l5_rpy_x" value="${mechanical_parameters['link']['rpy']['l5']['x']}"/>
+  <xacro:property name="l5_rpy_y" value="${mechanical_parameters['link']['rpy']['l5']['y']}"/>
+  <xacro:property name="l5_rpy_z" value="${mechanical_parameters['link']['rpy']['l5']['z']}"/>
+  <xacro:property name="l6_rpy_x" value="${mechanical_parameters['link']['rpy']['l6']['x']}"/>
+  <xacro:property name="l6_rpy_y" value="${mechanical_parameters['link']['rpy']['l6']['y']}"/>
+  <xacro:property name="l6_rpy_z" value="${mechanical_parameters['link']['rpy']['l6']['z']}"/>
+  <xacro:if value="${is_parallel}">
+    <xacro:property name="lp1_rpy_x" value="${mechanical_parameters['link']['rpy']['parallel_l1']['x']}"/>
+    <xacro:property name="lp1_rpy_y" value="${mechanical_parameters['link']['rpy']['parallel_l1']['y']}"/>
+    <xacro:property name="lp1_rpy_z" value="${mechanical_parameters['link']['rpy']['parallel_l1']['z']}"/>
+    <xacro:property name="lp2_rpy_x" value="${mechanical_parameters['link']['rpy']['parallel_l2']['x']}"/>
+    <xacro:property name="lp2_rpy_y" value="${mechanical_parameters['link']['rpy']['parallel_l2']['y']}"/>
+    <xacro:property name="lp2_rpy_z" value="${mechanical_parameters['link']['rpy']['parallel_l2']['z']}"/>
+  </xacro:if>
+
+  <xacro:property name="axis1" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['j1']))}"/>
+  <xacro:property name="axis2" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['j2']))}"/>
+  <xacro:property name="axis3" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['j3']))}"/>
+  <xacro:property name="axis4" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['j4']))}"/>
+  <xacro:property name="axis5" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['j5']))}"/>
+  <xacro:property name="axis6" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['j6']))}"/>
+  <xacro:if value="${is_parallel}">
+    <xacro:property name="p_axis1" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['parallel_j1']))}"/>
+    <xacro:property name="p_axis2" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['parallel_j2']))}"/>
+  </xacro:if>
+
+  <xacro:property name="j1_rpy_x" value="${mechanical_parameters['joint']['rpy']['j1']['x']}"/>
+  <xacro:property name="j1_rpy_y" value="${mechanical_parameters['joint']['rpy']['j1']['y']}"/>
+  <xacro:property name="j1_rpy_z" value="${mechanical_parameters['joint']['rpy']['j1']['z']}"/>
+  <xacro:property name="j2_rpy_x" value="${mechanical_parameters['joint']['rpy']['j2']['x']}"/>
+  <xacro:property name="j2_rpy_y" value="${mechanical_parameters['joint']['rpy']['j2']['y']}"/>
+  <xacro:property name="j2_rpy_z" value="${mechanical_parameters['joint']['rpy']['j2']['z']}"/>
+  <xacro:property name="j3_rpy_x" value="${mechanical_parameters['joint']['rpy']['j3']['x']}"/>
+  <xacro:property name="j3_rpy_y" value="${mechanical_parameters['joint']['rpy']['j3']['y']}"/>
+  <xacro:property name="j3_rpy_z" value="${mechanical_parameters['joint']['rpy']['j3']['z']}"/>
+  <xacro:property name="j4_rpy_x" value="${mechanical_parameters['joint']['rpy']['j4']['x']}"/>
+  <xacro:property name="j4_rpy_y" value="${mechanical_parameters['joint']['rpy']['j4']['y']}"/>
+  <xacro:property name="j4_rpy_z" value="${mechanical_parameters['joint']['rpy']['j4']['z']}"/>
+  <xacro:property name="j5_rpy_x" value="${mechanical_parameters['joint']['rpy']['j5']['x']}"/>
+  <xacro:property name="j5_rpy_y" value="${mechanical_parameters['joint']['rpy']['j5']['y']}"/>
+  <xacro:property name="j5_rpy_z" value="${mechanical_parameters['joint']['rpy']['j5']['z']}"/>
+  <xacro:property name="j6_rpy_x" value="${mechanical_parameters['joint']['rpy']['j6']['x']}"/>
+  <xacro:property name="j6_rpy_y" value="${mechanical_parameters['joint']['rpy']['j6']['y']}"/>
+  <xacro:property name="j6_rpy_z" value="${mechanical_parameters['joint']['rpy']['j6']['z']}"/>
+  <xacro:if value="${is_parallel}">
+    <xacro:property name="jp1_rpy_x" value="${mechanical_parameters['joint']['rpy']['parallel_j1']['x']}"/>
+    <xacro:property name="jp1_rpy_y" value="${mechanical_parameters['joint']['rpy']['parallel_j1']['y']}"/>
+    <xacro:property name="jp1_rpy_z" value="${mechanical_parameters['joint']['rpy']['parallel_j1']['z']}"/>
+    <xacro:property name="jp2_rpy_x" value="${mechanical_parameters['joint']['rpy']['parallel_j2']['x']}"/>
+    <xacro:property name="jp2_rpy_y" value="${mechanical_parameters['joint']['rpy']['parallel_j2']['y']}"/>
+    <xacro:property name="jp2_rpy_z" value="${mechanical_parameters['joint']['rpy']['parallel_j2']['z']}"/>
+  </xacro:if>
+</robot>

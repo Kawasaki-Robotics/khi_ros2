@@ -1,0 +1,17 @@
+# Example
+#   ros2 service call /khi_controller0/khi_service/set_timeout khi_msgs/srv/SetTimeout "{aux_timeout: 5000}"
+#   requester: making request: khi_msgs.srv.SetTimeout_Request(aux_timeout=5000)
+#
+#   response:
+#   khi_msgs.srv.SetTimeout_Response(success=True, error='')
+#
+#   Note: The '0' in khi_controller0 changes according to controller_no specified in khi_bringup.launch.py.
+
+int32 aux_timeout
+
+---
+
+bool success
+
+# For more details about the error, please refer to khi_hardware/docs/troubleshooting.md.
+string error

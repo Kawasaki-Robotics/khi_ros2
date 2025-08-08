@@ -1,0 +1,25 @@
+# Example
+#   > ros2 service call /khi_controller0/khi_service/reset_error khi_msgs/srv/ResetError
+#   requester: making request: khi_msgs.srv.ResetError_Request()
+#
+#   response:
+#   khi_msgs.srv.ResetError_Response(success=False, error_codes=[-31435], error_msgs=['Option setting is incorrect, cannot move. [PATH CONSTANT MOVE][COOPERATIVE MOTION'])
+#
+#   Note: The '0' in khi_controller0 changes according to controller_no specified in khi_bringup.launch.py.
+
+
+---
+
+# If the error cannot be reset, false will be stored.
+bool success
+
+# The error codes that occure after the error reset are stored.
+# -1xxxx : Operation Error
+# -2xxxx : Mechanical/Control Warning
+# -3xxxx : Error
+# -4xxxx : Fatal Error
+int32[] error_codes
+
+# The error messages corresponding to the error codes are stored.
+# Please refer to Troubleshooting Manual for details.
+string[] error_msgs

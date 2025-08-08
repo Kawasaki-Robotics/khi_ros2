@@ -1,0 +1,40 @@
+# Example
+#   ros2 service call /khi_controller0/khi_service/exec_khi_command khi_msgs/srv/ExecKhiCommand "{command: "where"}"
+#   requester: making request: khi_msgs.srv.ExecKhiCommand_Request(command='where')
+#
+#   response:
+#   khi_msgs.srv.ExecKhiCommand_Response(success=True, return_message='     JT1       JT2       JT3       JT4       JT5       JT6     120.001    89.983     0.010     0.003   -34.893    -0.000    X[mm]     Y[mm]     Z[mm]     O[deg]    A[deg]    T[deg]  1935.529 -1117.556  -101.062   -30.004   125.225   -90.005', error_code=0, error_msg='')
+#
+#   Note: The '0' in khi_controller0 changes according to controller_no specified in khi_bringup.launch.py.
+
+# AS Language Command
+# Please refer to AS Language Reference Manual.
+# Note: LOAD and SAVE commands cannot be executed. Please use USB_SAVE and USB_LOAD instead.
+# Note: When using monitor commands that return continuous responses, such as "WHERE 1",
+#       the process will terminate once the response exceeds the size specified by KRNX_MSGSIZE.
+# Note: When using monitor commands that require a query response, such as POINT or HERE,
+#       store the response and the necessary newline characters in cmd,
+string command
+
+---
+
+bool success
+
+# Error returned as a result of executing krnx_ExecMon
+# For more details about the error, please refer to khi_hardware/docs/troubleshooting.md.
+# Note: If -0x1003 or -0x100e is stored in krnx_err, please increase the value of aux_timeout in the SetTimeout service.
+#       The default is set to 3000ms.
+string krnx_err
+
+# Response of AS Language Command
+string return_message
+
+# -1xxxx : Operation Error
+# -2xxxx : Mechanical/Control Warning
+# -3xxxx : Error
+# -4xxxx : Fatal Error
+int32 error_code
+
+# The error messages corresponding to the error codes are stored.
+# Please refer to Troubleshooting Manual for details.
+string error_msg

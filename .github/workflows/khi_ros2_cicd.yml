@@ -1,0 +1,32 @@
+name: KHI ROS2 CI/CD Workflow
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      cicd_branch:
+        description: 'khi_ros2_cicd branch'
+        required: false
+        default: 'main'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  khi_ros2_cicd:
+    name: KHI ROS2 CI/CD
+    uses: Kawasaki-Robotics/khi_ros2_cicd/.github/workflows/khi_ros2_cicd.yml@main
+    with:
+      cicd_branch: ${{ github.event.inputs.cicd_branch }}
+      ros_distro: humble
+    secrets:
+      token: ${{ secrets.GHCR_TOKEN }}

@@ -1,0 +1,35 @@
+name: Mirror Private Repo to Public
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      branch:
+        required: false
+        default: 'main'
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    if: github.repository == 'Kawasaki-Robotics/khi_ros2_private'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Push to public repo
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            branch=${{ inputs.branch }}
+          else
+            branch=${{ github.ref_name }}
+          fi
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "<>"
+          git remote add public https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Kawasaki-Robotics/khi_ros2.git
+          git push --force public ${branch}

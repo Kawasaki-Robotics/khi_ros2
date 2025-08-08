@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="khi_gazebo" params="robot_series robot_controller">
+
+    <!-- ros_control plugin -->
+    <gazebo>
+      <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+        <parameters>$(find khi_description)/config/$(arg robot_series)/khi_controllers.yaml</parameters>
+        <parameters>$(find khi_description)/config/update_rate/${robot_controller}_controller_update_rate.yaml</parameters>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

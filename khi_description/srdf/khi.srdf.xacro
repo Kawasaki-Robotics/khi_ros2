@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<robot name="$(arg robot_name)" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="robot_series" default="rs" />
+  <xacro:arg name="robot_name" default="" />
+
+  <xacro:include filename="$(find khi_description)/srdf/$(arg robot_series)/khi_macro.srdf.xacro"/>
+
+  <xacro:khi_srdf prefix="$(arg prefix)" robot_name="$(arg robot_name)"/>
+</robot>

@@ -1,0 +1,9 @@
+<library path="khi_hardware">
+  <class name="khi_hardware/KhiHardwareInterface"
+         type="khi_hardware::KhiHardwareInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ros2_control examples.
+    </description>
+  </class>
+</library>

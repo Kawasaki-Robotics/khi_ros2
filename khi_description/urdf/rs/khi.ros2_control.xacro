@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="khi_ros2_control" params="
+    prefix
+    robot_series
+    robot_name
+    simulation
+    use_gazebo
+    robot_ip
+    robot_controller
+    controller_no
+    actual_current
+    command_current
+    actual_encorder
+    command_encorder
+    tcp_info
+    external_signal
+    internal_signal
+    ft_sensor
+    ">
+    <ros2_control name="${robot_name}" type="system">
+
+      <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/get_mechanical_parameters.xacro"/>
+
+      <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/get_joint_limits.xacro"/>
+
+      <xacro:property name="update_rate_path" value="$(find khi_description)/config/update_rate/${robot_controller}_controller_update_rate.yaml"/>
+      <xacro:property name="update_rate_yaml" value="${xacro.load_yaml(update_rate_path)}"/>
+      <xacro:property name="update_rate" value="${update_rate_yaml['controller_manager']['ros__parameters']['update_rate']}"/>
+
+      <hardware>
+        <xacro:if value="${use_gazebo}">
+          <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        </xacro:if>
+        <xacro:unless value="${use_gazebo}">
+          <plugin>khi_hardware/KhiHardwareInterface</plugin>
+          <param name="robot_name">$(arg robot_name)</param>
+          <param name="robot_ip">$(arg robot_ip)</param>
+          <param name="simulation">$(arg simulation)</param>
+          <param name="update_rate">${update_rate}</param>
+          <param name="controller_no">${controller_no}</param>
+          <param name="actual_current">${actual_current}</param>
+          <param name="command_current">${command_current}</param>
+          <param name="actual_encorder">${actual_encorder}</param>
+          <param name="command_encorder">${command_encorder}</param>
+          <param name="tcp_info">${tcp_info}</param>
+          <param name="external_signal">${external_signal}</param>
+          <param name="internal_signal">${internal_signal}</param>
+          <param name="ft_sensor">${ft_sensor}</param>
+        </xacro:unless>
+      </hardware>
+
+      <joint name="${prefix}joint1">
+        <command_interface name="position">
+          <param name="min">${jt1_min_position}</param>
+          <param name="max">${jt1_max_position}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <param name="type"> ${jt1_type} </param>
+        <param name="arm">arm1</param>
+      </joint>
+
+      <joint name="${prefix}joint2">
+        <command_interface name="position">
+          <param name="min">${jt2_min_position}</param>
+          <param name="max">${jt2_max_position}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <param name="type"> ${jt2_type} </param>
+        <param name="arm">arm1</param>
+      </joint>
+
+      <joint name="${prefix}joint3">
+        <command_interface name="position">
+          <param name="min">${jt3_min_position}</param>
+          <param name="max">${jt3_max_position}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <param name="type"> ${jt3_type} </param>
+        <param name="arm">arm1</param>
+      </joint>
+
+      <joint name="${prefix}joint4">
+        <command_interface name="position">
+          <param name="min">${jt4_min_position}</param>
+          <param name="max">${jt4_max_position}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <param name="type"> ${jt4_type} </param>
+        <param name="arm">arm1</param>
+      </joint>
+
+      <joint name="${prefix}joint5">
+        <command_interface name="position">
+          <param name="min">${jt5_min_position}</param>
+          <param name="max">${jt5_max_position}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <param name="type"> ${jt5_type} </param>
+        <param name="arm">arm1</param>
+      </joint>
+
+      <joint name="${prefix}joint6">
+        <command_interface name="position">
+          <param name="min">${jt6_min_position}</param>
+          <param name="max">${jt6_max_position}</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <param name="type"> ${jt6_type} </param>
+        <param name="arm">arm1</param>
+      </joint>
+    </ros2_control>
+  </xacro:macro>
+</robot>

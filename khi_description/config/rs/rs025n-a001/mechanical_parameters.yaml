@@ -1,0 +1,213 @@
+link:
+  length:
+    l0:
+      x: 0
+      y: 0
+      z: 0.58
+    l1:
+      x: 0
+      y: 0
+      z: 0
+    l2:
+      x: 0.885
+      y: 0
+      z: 0
+    lv:
+      x: 0
+      y: 0
+      z: 0
+    lh:
+      x: 0
+      y: 0
+      z: 0
+    ls:
+      x: 0
+      y: 0
+      z: 0
+    l3:
+      x: 0.15
+      y: 0
+      z: 0
+    l4:
+      x: 0
+      y: 0
+      z: 0.85
+    l5:
+      x: 0.100
+      y: 0
+      z: 0
+  mass:
+    l0: 84.124
+    l1: 73.318
+    l2: 59.038
+    l3: 33.226
+    l4: 16.236
+    l5: 4.058
+    l6: 0.0001
+  center_of_mass:
+    l0:
+      x: 0
+      y: 0
+      z: 0
+    l1:
+      x: 0
+      y: 0
+      z: 0
+    l2:
+      x: 0
+      y: 0
+      z: 0
+    lv:
+      x: 0
+      y: 0
+      z: 0
+    lh:
+      x: 0
+      y: 0
+      z: 0
+    l3:
+      x: 0
+      y: 0
+      z: 0
+    l4:
+      x: 0
+      y: 0
+      z: 0
+    l5:
+      x: 0
+      y: 0
+      z: 0
+    l6:
+      x: 0
+      y: 0
+      z: 0
+  inertia:
+    l0:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    l1:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    l2:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    lv:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    lh:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    l3:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    l4:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    l5:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    l6:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+  rpy:
+    l1:
+      x: 0
+      y: 0
+      z: 0
+    l2:
+      x: 0
+      y: 90
+      z: 0
+    l3:
+      x: 0
+      y: 90
+      z: 0
+    l4:
+      x: 0
+      y: 0
+      z: 0
+    l5:
+      x: 0
+      y: 90
+      z: 0
+    l6:
+      x: 0
+      y: 0
+      z: 0
+
+joint:
+  type:
+    j1: "revolute"
+    j2: "revolute"
+    j3: "revolute"
+    j4: "revolute"
+    j5: "revolute"
+    j6: "revolute"
+  axis:
+    j1: [0, 0, -1]
+    j2: [0, 0, 1]
+    j3: [0, 0, -1]
+    j4: [0, 0, 1]
+    j5: [0, 0, -1]
+    j6: [0, 0, 1]
+  rpy:
+    j1:
+      x: 0
+      y: 0
+      z: 0
+    j2:
+      x: 0
+      y: -90
+      z: 0
+    j3:
+      x: 0
+      y: 0
+      z: 0
+    j4:
+      x: 0
+      y: 90
+      z: 0
+    j5:
+      x: 0
+      y: -90
+      z: 0
+    j6:
+      x: 0
+      y: 90
+      z: 0

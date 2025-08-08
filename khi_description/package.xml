@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>khi_description</name>
+  <version>1.0.0</version>
+  <description> The khi_description package</description>
+  <maintainer email="kurita_taisuke@global.kawasaki.com">Kurita Taisuke</maintainer>
+  <author email="kurita_taisuke@global.kawasaki.com">Kurita Taisuke</author>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+    <gazebo_ros gazebo_model_path="${prefix}/../"/>
+  </export>
+</package>

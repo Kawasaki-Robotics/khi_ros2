@@ -1,0 +1,18 @@
+planning_pipelines: [ompl, pilz, chomp]
+ompl:
+  planning_plugin: ompl_interface/OMPLPlanner
+  request_adapters:
+    default_planner_request_adapters/AddTimeOptimalParameterization
+    default_planner_request_adapters/ResolveConstraintFrames
+    default_planner_request_adapters/FixWorkspaceBounds
+    default_planner_request_adapters/FixStartStateBounds
+    default_planner_request_adapters/FixStartStateCollision
+    default_planner_request_adapters/FixStartStatePathConstraints
+  start_state_max_bounds_error: 0.1
+pilz:
+  planning_plugin: pilz_industrial_motion_planner/CommandPlanner
+  request_adapters: ""
+  default_planner_config: PTP
+  capabilities: >-
+    pilz_industrial_motion_planner/MoveGroupSequenceAction
+    pilz_industrial_motion_planner/MoveGroupSequenceService

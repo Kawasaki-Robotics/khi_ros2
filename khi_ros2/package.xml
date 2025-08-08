@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>khi_ros2</name>
+  <version>1.0.0</version>
+  <description>The khi_robot2 package</description>
+  <maintainer email="kurita_taisuke@global.kawasaki.com">Kurita Taisuke</maintainer>
+  <author email="kurita_taisuke@global.kawasaki.com">Kurita Taisuke</author>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

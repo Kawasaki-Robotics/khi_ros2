@@ -1,0 +1,280 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="khi_joint_link" params="prefix robot_series robot_name">
+
+    <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/get_mechanical_parameters.xacro"/>
+
+    <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/get_joint_limits.xacro"/>
+
+    <xacro:include filename="$(find khi_description)/urdf/material.xacro"/>
+
+    <!-- Fix robot to world -->
+    <link name="world"/>
+
+    <!-- Joint  -->
+    <joint name="${prefix}world2base" type="fixed">
+      <parent link="world"/>
+      <child link="${prefix}base_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+    <joint name="${prefix}joint1" type="${jt1_type}">
+      <axis xyz="${axis1}" />
+      <limit effort="1000.0" lower="${jt1_min_position}" upper="${jt1_max_position}" velocity="${jt1_max_velocity}"/>
+      <origin xyz="${l0_x} ${l0_y} ${l0_z}" rpy="${radians(j1_rpy_x)} ${radians(j1_rpy_y)} ${radians(j1_rpy_z)}" />
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}link1"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="${prefix}joint2" type="${jt2_type}">
+      <axis xyz="${axis2}"/>
+      <limit effort="1000.0" lower="${jt2_min_position}" upper="${jt2_max_position}" velocity="${jt2_max_velocity}"/>
+      <origin xyz="${l1_x} ${l1_y} ${l1_z}" rpy="${radians(j2_rpy_x)} ${radians(j2_rpy_y)} ${radians(j2_rpy_z)}" />
+      <parent link="${prefix}link1"/>
+      <child link="${prefix}link2"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="${prefix}joint3" type="${jt3_type}">
+      <axis xyz="${axis3}"/>
+      <limit effort="1000.0" lower="${jt3_min_position}" upper="${jt3_max_position}" velocity="${jt3_max_velocity}"/>
+      <xacro:if value="${is_parallel}">
+        <origin xyz="${lh_x} ${lh_y} ${lh_z}" rpy="${radians(j3_rpy_x)} ${radians(j3_rpy_y)} ${radians(j3_rpy_z)}" />
+        <parent link="${prefix}parallel_arm2"/>
+      </xacro:if>
+      <xacro:unless value="${is_parallel}">
+        <origin xyz="${l2_x} ${l2_y} ${l2_z}" rpy="${radians(j3_rpy_x)} ${radians(j3_rpy_y)} ${radians(j3_rpy_z)}" />
+        <parent link="${prefix}link2"/>
+      </xacro:unless>
+      <child link="${prefix}link3"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="${prefix}joint4" type="${jt4_type}">
+      <axis xyz="${axis4}"/>
+      <limit effort="1000.0" lower="${jt4_min_position}" upper="${jt4_max_position}" velocity="${jt4_max_velocity}"/>
+      <origin xyz="${l3_x} ${l3_y} ${l3_z}" rpy="${radians(j4_rpy_x)} ${radians(j4_rpy_y)} ${radians(j4_rpy_z)}" />
+      <parent link="${prefix}link3"/>
+      <child link="${prefix}link4"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="${prefix}joint5" type="${jt5_type}">
+      <axis xyz="${axis5}"/>
+      <limit effort="1000.0" lower="${jt5_min_position}" upper="${jt5_max_position}" velocity="${jt5_max_velocity}"/>
+      <origin xyz="${l4_x} ${l4_y} ${l4_z}" rpy="${radians(j5_rpy_x)} ${radians(j5_rpy_y)} ${radians(j5_rpy_z)}" />
+      <parent link="${prefix}link4"/>
+      <child link="${prefix}link5"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="${prefix}joint6" type="${jt6_type}">
+      <axis xyz="${axis6}"/>
+      <limit effort="1000.0" lower="${jt6_min_position}" upper="${jt6_max_position}" velocity="${jt6_max_velocity}"/>
+      <origin xyz="${l5_x} ${l5_y} ${l5_z}" rpy="${radians(j6_rpy_x)} ${radians(j6_rpy_y)} ${radians(j6_rpy_z)}" />
+      <parent link="${prefix}link5"/>
+      <child link="${prefix}link6"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+
+    <!-- Parallel Joint  -->
+    <xacro:if value="${is_parallel}">
+      <joint name="${prefix}parallel_joint1" type="continuous">
+        <axis xyz="${p_axis1}"/>
+        <origin xyz="${ls_x} ${ls_y} ${ls_z}" rpy="${radians(jp1_rpy_x)} ${radians(jp1_rpy_y)} ${radians(jp1_rpy_z)}" />
+        <parent link="${prefix}link1"/>
+        <child link="${prefix}parallel_arm1"/>
+        <mimic joint="${prefix}joint2" multiplier="1" offset="0"/>
+      </joint>
+      <joint name="${prefix}parallel_joint2" type="continuous">
+        <axis xyz="${p_axis2}"/>
+        <origin xyz="${l2_x} ${l2_y} ${l2_z}" rpy="${radians(jp2_rpy_x)} ${radians(jp2_rpy_y)} ${radians(jp2_rpy_z)}" />
+        <parent link="${prefix}link2"/>
+        <child link="${prefix}parallel_arm2"/>
+        <mimic joint="${prefix}joint2" multiplier="-1" offset="0"/>
+      </joint>
+    </xacro:if>
+
+    <!-- Link  -->
+    <link name="${prefix}base_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J0.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J0.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+      <inertial>
+        <origin xyz="${link0_mass_x} ${link0_mass_y} ${link0_mass_z}"/>
+        <mass value="${link0_mass}"/>
+        <inertia ixx="${link0_ixx}" ixy="${link0_ixy}" ixz="${link0_ixz}" iyy="${link0_iyy}" iyz="${link0_iyz}" izz="${link0_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}link1">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J1.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(l1_rpy_x)} ${radians(l1_rpy_y)} ${radians(l1_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J1.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(l1_rpy_x)} ${radians(l1_rpy_y)} ${radians(l1_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${link1_mass_x} ${link1_mass_y} ${link1_mass_z}"/>
+        <mass value="${link1_mass}"/>
+        <inertia ixx="${link1_ixx}" ixy="${link1_ixy}" ixz="${link1_ixz}" iyy="${link1_iyy}" iyz="${link1_iyz}" izz="${link1_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}link2">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J2.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(l2_rpy_x)} ${radians(l2_rpy_y)} ${radians(l2_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J2.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(l2_rpy_x)} ${radians(l2_rpy_y)} ${radians(l2_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${link2_mass_x} ${link2_mass_y} ${link2_mass_z}"/>
+        <mass value="${link2_mass}"/>
+        <inertia ixx="${link2_ixx}" ixy="${link2_ixy}" ixz="${link2_ixz}" iyy="${link2_iyy}" iyz="${link2_iyz}" izz="${link2_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}link3">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(l3_rpy_x)} ${radians(l3_rpy_y)} ${radians(l3_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(l3_rpy_x)} ${radians(l3_rpy_y)} ${radians(l3_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${link3_mass_x} ${link3_mass_y} ${link3_mass_z}"/>
+        <mass value="${link3_mass}"/>
+        <inertia ixx="${link3_ixx}" ixy="${link3_ixy}" ixz="${link3_ixz}" iyy="${link3_iyy}" iyz="${link3_iyz}" izz="${link3_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}link4">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J4.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="${l4_x} ${l4_y} ${l4_z}" rpy="${radians(l4_rpy_x)} ${radians(l4_rpy_y)} ${radians(l4_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J4.stl"/>
+        </geometry>
+        <origin xyz="${l4_x} ${l4_y} ${l4_z}" rpy="${radians(l4_rpy_x)} ${radians(l4_rpy_y)} ${radians(l4_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${link4_mass_x} ${link4_mass_y} ${link4_mass_z}"/>
+        <mass value="${link4_mass}"/>
+        <inertia ixx="${link4_ixx}" ixy="${link4_ixy}" ixz="${link4_ixz}" iyy="${link4_iyy}" iyz="${link4_iyz}" izz="${link4_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}link5">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J5.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(l5_rpy_x)} ${radians(l5_rpy_y)} ${radians(l5_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J5.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(l5_rpy_x)} ${radians(l5_rpy_y)} ${radians(l5_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${link5_mass_x} ${link5_mass_y} ${link5_mass_z}"/>
+        <mass value="${link5_mass}"/>
+        <inertia ixx="${link5_ixx}" ixy="${link5_ixy}" ixz="${link5_ixz}" iyy="${link5_iyy}" iyz="${link5_iyz}" izz="${link5_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}link6">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J6.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(l6_rpy_x)} ${radians(l6_rpy_y)} ${radians(l6_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J6.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(l6_rpy_x)} ${radians(l6_rpy_y)} ${radians(l6_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${link6_mass_x} ${link6_mass_y} ${link6_mass_z}"/>
+        <mass value="${link6_mass}"/>
+        <inertia ixx="${link6_ixx}" ixy="${link6_ixy}" ixz="${link6_ixz}" iyy="${link6_iyy}" iyz="${link6_iyz}" izz="${link6_izz}"/>
+      </inertial>
+    </link>
+
+    <!-- Parallel Link  -->
+    <xacro:if value="${is_parallel}">
+      <link name="${prefix}parallel_arm1">
+        <visual>
+          <geometry>
+            <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/Parallel_arm1.stl"/>
+          </geometry>
+          <xacro:white/>
+          <origin xyz="0 0 0" rpy="${radians(lp1_rpy_x)} ${radians(lp1_rpy_y)} ${radians(lp1_rpy_z)}"/>
+        </visual>
+        <collision>
+          <geometry>
+            <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/Parallel_arm1.stl"/>
+          </geometry>
+          <origin xyz="0 0 0" rpy="${radians(lp1_rpy_x)} ${radians(lp1_rpy_y)} ${radians(lp2_rpy_z)}"/>
+        </collision>
+        <inertial>
+          <origin xyz="${linkh_mass_x} ${linkh_mass_y} ${linkh_mass_z}"/>
+          <mass value="${linkh_mass}"/>
+          <inertia ixx="${linkh_ixx}" ixy="${linkh_ixy}" ixz="${linkh_ixz}" iyy="${linkh_iyy}" iyz="${linkh_iyz}" izz="${linkh_izz}"/>
+        </inertial>
+      </link>
+      <link name="${prefix}parallel_arm2">
+        <visual>
+          <geometry>
+            <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/Parallel_arm2.stl"/>
+          </geometry>
+          <xacro:white/>
+          <origin xyz="0 0 0" rpy="${radians(lp2_rpy_x)} ${radians(lp2_rpy_y)} ${radians(lp2_rpy_z)}"/>
+        </visual>
+        <collision>
+          <geometry>
+            <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/Parallel_arm2.stl"/>
+          </geometry>
+          <origin xyz="0 0 0" rpy="${radians(lp2_rpy_x)} ${radians(lp2_rpy_y)} ${radians(lp2_rpy_z)}"/>
+        </collision>
+        <inertial>
+          <origin xyz="${linkv_mass_x} ${linkv_mass_y} ${linkv_mass_z}"/>
+          <mass value="${linkv_mass}"/>
+          <inertia ixx="${linkv_ixx}" ixy="${linkv_ixy}" ixz="${linkv_ixz}" iyy="${linkv_iyy}" iyz="${linkv_iyz}" izz="${linkv_izz}"/>
+        </inertial>
+      </link>
+    </xacro:if>
+  </xacro:macro>
+</robot>

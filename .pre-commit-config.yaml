@@ -1,0 +1,82 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-xml
+      - id: check-yaml
+        args: ["--allow-multiple-documents"]
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+        exclude: \.(md|rst)$
+      - id: fix-byte-order-marker
+
+  # Cmake
+  - repo: local
+    hooks:
+      - id: ament_lint_cmake
+        name: ament_lint_cmake
+        description: Check format of CMakeLists.txt files.
+        entry: ament_lint_cmake
+        language: system
+        files: CMakeLists\.txt$
+
+  # C++
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v19.1.7
+    hooks:
+      - id: clang-format
+        args: ['-fallback-style=none', '-i']
+
+  # C++
+  - repo: local
+    hooks:
+      - id: ament_cppcheck
+        name: ament_cppcheck
+        description: Static code analysis of C/C++ files.
+        entry: env AMENT_CPPCHECK_ALLOW_SLOW_VERSIONS=1 ament_cppcheck
+        language: system
+        files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
+
+  # C++
+  - repo: local
+    hooks:
+      - id: ament_cpplint
+        name: ament_cpplint
+        description: Static code analysis of C/C++ files.
+        entry: ament_cpplint
+        language: system
+        files: \.(h\+\+|h|hh|hxx|hpp|cuh|c|cc|cpp|cu|c\+\+|cxx|tpp|txx)$
+        args: ["--linelength=100", "--filter=-whitespace/newline"]
+        exclude: krnx.h
+
+  # Python
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+        args: ["--line-length=99"]
+
+  # Python
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.1
+    hooks:
+    - id: flake8
+      args: ["--extend-ignore=E501"]
+
+  # Copyright
+  - repo: local
+    hooks:
+      - id: ament_copyright
+        name: ament_copyright
+        description: Check if copyright notice is available in all files.
+        entry: ament_copyright
+        language: system
+        exclude: krnx.h

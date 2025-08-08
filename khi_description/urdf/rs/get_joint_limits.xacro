@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="joint_limits_path" value="$(find khi_description)/config/$(arg robot_series)/$(arg robot_name)/joint_limits.yaml"/>
+  <xacro:property name="joint_limits" value="${xacro.load_yaml(joint_limits_path)}"/>
+
+  <xacro:property name="jt1_min_position" value="${joint_limits['joint_limits']['joint1']['min_position']}"/>
+  <xacro:property name="jt2_min_position" value="${joint_limits['joint_limits']['joint2']['min_position']}"/>
+  <xacro:property name="jt3_min_position" value="${joint_limits['joint_limits']['joint3']['min_position']}"/>
+  <xacro:property name="jt4_min_position" value="${joint_limits['joint_limits']['joint4']['min_position']}"/>
+  <xacro:property name="jt5_min_position" value="${joint_limits['joint_limits']['joint5']['min_position']}"/>
+  <xacro:property name="jt6_min_position" value="${joint_limits['joint_limits']['joint6']['min_position']}"/>
+
+  <xacro:property name="jt1_max_position" value="${joint_limits['joint_limits']['joint1']['max_position']}"/>
+  <xacro:property name="jt2_max_position" value="${joint_limits['joint_limits']['joint2']['max_position']}"/>
+  <xacro:property name="jt3_max_position" value="${joint_limits['joint_limits']['joint3']['max_position']}"/>
+  <xacro:property name="jt4_max_position" value="${joint_limits['joint_limits']['joint4']['max_position']}"/>
+  <xacro:property name="jt5_max_position" value="${joint_limits['joint_limits']['joint5']['max_position']}"/>
+  <xacro:property name="jt6_max_position" value="${joint_limits['joint_limits']['joint6']['max_position']}"/>
+
+  <xacro:property name="jt1_max_velocity" value="${joint_limits['joint_limits']['joint1']['max_velocity']}"/>
+  <xacro:property name="jt2_max_velocity" value="${joint_limits['joint_limits']['joint2']['max_velocity']}"/>
+  <xacro:property name="jt3_max_velocity" value="${joint_limits['joint_limits']['joint3']['max_velocity']}"/>
+  <xacro:property name="jt4_max_velocity" value="${joint_limits['joint_limits']['joint4']['max_velocity']}"/>
+  <xacro:property name="jt5_max_velocity" value="${joint_limits['joint_limits']['joint5']['max_velocity']}"/>
+  <xacro:property name="jt6_max_velocity" value="${joint_limits['joint_limits']['joint6']['max_velocity']}"/>
+</robot>

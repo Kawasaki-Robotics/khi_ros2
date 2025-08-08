@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<robot name="$(arg robot_name)" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="robot_name" default="" />
+  <xacro:arg name="robot_series" default="rs" />
+  <xacro:arg name="simulation" default="false" />
+  <xacro:arg name="use_gazebo" default="false" />
+  <xacro:arg name="robot_ip" default="" />
+  <xacro:arg name="robot_controller" default="f" />
+  <xacro:arg name="controller_no" default="0" />
+  <xacro:arg name="actual_current" default="false" />
+  <xacro:arg name="command_current" default="false" />
+  <xacro:arg name="actual_encorder" default="false" />
+  <xacro:arg name="command_encorder" default="false" />
+  <xacro:arg name="tcp_info" default="false" />
+  <xacro:arg name="external_signal" default="false" />
+  <xacro:arg name="internal_signal" default="false" />
+  <xacro:arg name="ft_sensor" default="false" />
+
+  <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/khi_joint_link.xacro"/>
+  <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/khi.ros2_control.xacro"/>
+  <xacro:include filename="$(find khi_description)/urdf/khi.gazebo.xacro"/>
+
+  <!-- instantiate robot -->
+  <xacro:khi_joint_link prefix="$(arg prefix)" robot_series="$(arg robot_series)" robot_name="$(arg robot_name)"/>
+
+  <xacro:khi_ros2_control
+    prefix="$(arg prefix)"
+    robot_series="$(arg robot_series)"
+    robot_name="$(arg robot_name)"
+    simulation="$(arg simulation)"
+    use_gazebo="$(arg use_gazebo)"
+    robot_ip="$(arg robot_ip)"
+    robot_controller="$(arg robot_controller)"
+    controller_no="$(arg controller_no)"
+    actual_current="$(arg actual_current)"
+    command_current="$(arg command_current)"
+    actual_encorder="$(arg actual_encorder)"
+    command_encorder="$(arg command_encorder)"
+    tcp_info="$(arg tcp_info)"
+    external_signal="$(arg external_signal)"
+    internal_signal="$(arg internal_signal)"
+    ft_sensor="$(arg ft_sensor)"
+    />
+
+  <xacro:if value="$(arg use_gazebo)">
+    <xacro:khi_gazebo robot_series="$(arg robot_series)" robot_controller="$(arg robot_controller)"/>
+  </xacro:if>
+</robot>
