@@ -14,6 +14,7 @@ Controller(F60A): Higher than ```ASF_010000020```
 ### Supported Robot
 
  * RS007L-B001
+ * RS013N-A001
  * RS015X-A001
  * RS025N-A001
  * RS080N-A001

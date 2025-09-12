@@ -59,6 +59,7 @@ def generate_launch_description():
             choices=[
                 "rs007l-b001",
                 "rs015x-a001",
+                "rs013n-a001",
                 "rs025n-a001",
                 "rs080n-a001",
                 "bx300l-b001",
