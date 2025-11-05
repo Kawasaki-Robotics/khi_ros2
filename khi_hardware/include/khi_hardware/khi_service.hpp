@@ -17,9 +17,11 @@
 
 #include <memory>
 
+#include "khi_msgs/srv/change_ft_output_mode.hpp"
 #include "khi_msgs/srv/exec_khi_command.hpp"
 #include "khi_msgs/srv/get_signal.hpp"
 #include "khi_msgs/srv/reset_error.hpp"
+#include "khi_msgs/srv/set_ati_software_bias.hpp"
 #include "khi_msgs/srv/set_signal.hpp"
 #include "khi_msgs/srv/set_timeout.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -45,6 +47,8 @@ private:
   rclcpp::Service<khi_msgs::srv::ExecKhiCommand>::SharedPtr khi_cmd_service_{};
   rclcpp::Service<khi_msgs::srv::ResetError>::SharedPtr reset_error_service_{};
   rclcpp::Service<khi_msgs::srv::SetTimeout>::SharedPtr set_timeout_service_{};
+  rclcpp::Service<khi_msgs::srv::SetATISoftwareBias>::SharedPtr set_ati_software_bias_service_{};
+  rclcpp::Service<khi_msgs::srv::ChangeFTOutputMode>::SharedPtr change_ft_output_mode_service_{};
 };
 
 }  // namespace khi_hardware

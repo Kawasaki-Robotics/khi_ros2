@@ -70,6 +70,21 @@ void KhiService::service_loop(KhiDriver & driver)
   set_timeout_service_ =
     node_->create_service<khi_msgs::srv::SetTimeout>("~/set_timeout", set_timeout);
 
+  auto set_soft_bias = [&driver](
+                         const khi_msgs::srv::SetATISoftwareBias::Request::SharedPtr & req,
+                         const khi_msgs::srv::SetATISoftwareBias::Response::SharedPtr & resp)
+  { driver.set_ati_software_bias_srv_cb(req, resp); };
+  set_ati_software_bias_service_ = node_->create_service<khi_msgs::srv::SetATISoftwareBias>(
+    "~/set_ati_software_bias", set_soft_bias);
+
+  auto change_ft_output_mode =
+    [&driver](
+      const khi_msgs::srv::ChangeFTOutputMode::Request::SharedPtr & req,
+      const khi_msgs::srv::ChangeFTOutputMode::Response::SharedPtr & resp)
+  { driver.change_ft_output_mode_srv_cb(req, resp); };
+  change_ft_output_mode_service_ = node_->create_service<khi_msgs::srv::ChangeFTOutputMode>(
+    "~/change_ft_output_mode", change_ft_output_mode);
+
   RCLCPP_INFO(rclcpp::get_logger("khi_hardware"), "KhiService Start");
 
   rclcpp::executors::SingleThreadedExecutor exec;

@@ -318,6 +318,31 @@ bool KhiKrnxDriver::read()
     }
   }
 
+  // Set F/T sensor data
+  if (periodic_data_config_.is_ft_sensor_enabled)
+  {
+    TKrnxRtExtraData data = {};
+    krnx_GetRtCyclicExtraData(robot_.controller_no, &data);
+    if (robot_.ft_sensor.enable_n_nm_output)
+    {
+      robot_.ft_sensor.force_x = data.extra_data[FORCE_X] * robot_.ft_sensor.counter_to_n_ratio;
+      robot_.ft_sensor.force_y = data.extra_data[FORCE_Y] * robot_.ft_sensor.counter_to_n_ratio;
+      robot_.ft_sensor.force_z = data.extra_data[FORCE_Z] * robot_.ft_sensor.counter_to_n_ratio;
+      robot_.ft_sensor.torque_x = data.extra_data[TORQUE_X] * robot_.ft_sensor.counter_to_nm_ratio;
+      robot_.ft_sensor.torque_y = data.extra_data[TORQUE_Y] * robot_.ft_sensor.counter_to_nm_ratio;
+      robot_.ft_sensor.torque_z = data.extra_data[TORQUE_Z] * robot_.ft_sensor.counter_to_nm_ratio;
+    }
+    else
+    {
+      robot_.ft_sensor.force_x = static_cast<double>(data.extra_data[FORCE_X]);
+      robot_.ft_sensor.force_y = static_cast<double>(data.extra_data[FORCE_Y]);
+      robot_.ft_sensor.force_z = static_cast<double>(data.extra_data[FORCE_Z]);
+      robot_.ft_sensor.torque_x = static_cast<double>(data.extra_data[TORQUE_X]);
+      robot_.ft_sensor.torque_y = static_cast<double>(data.extra_data[TORQUE_Y]);
+      robot_.ft_sensor.torque_z = static_cast<double>(data.extra_data[TORQUE_Z]);
+    }
+  }
+
   return true;
 }
 
@@ -1722,5 +1747,56 @@ void KhiKrnxDriver::set_periodic_data_config() const
     kind |= KRNX_CYC_KIND_EXTRA_DATA;
   }
   krnx_SetRtCyclicDataKind(robot_.controller_no, kind);
+}
+
+/**
+ * @brief Executes the RDT command SetSoftwareBias on the ATI F/T sensor connected to the robot
+ * controller.
+ * @param req request
+ * @param resp responce
+ * @memberof KhiKrnxDriver
+ */
+void KhiKrnxDriver::set_ati_software_bias_srv_cb(
+  const khi_msgs::srv::SetATISoftwareBias::Request::SharedPtr & /*req*/,
+  const khi_msgs::srv::SetATISoftwareBias::Response::SharedPtr & resp) const
+{
+  resp->success = true;
+
+  int error_code = 0;
+  int return_code = krnx_SetATISoftwareBias(robot_.controller_no, &error_code);
+
+  if (return_code != KRNX_NOERROR)
+  {
+    std::stringstream ss;
+    ss << std::hex << -return_code;
+    resp->krnx_err = "-0x" + ss.str();
+    resp->success = false;
+  }
+
+  if (error_code != 0)
+  {
+    resp->error_code = error_code;
+    std::string cmd = "TYPE $ERROR(" + std::to_string(error_code) + ")";
+    char msg[KRNX_MSGSIZE];
+    exec_monitor_command(robot_.controller_no, cmd.c_str(), msg, sizeof(msg), &error_code, true);
+    resp->error_msg = convert_to_utf8(msg);
+    resp->success = false;
+  }
+}
+
+/**
+ * @brief Switch the output unit of the values obtained from the FT sensor (Counter [default] ⇔ N,
+ * Nm)
+ * @param req request
+ * @param resp responce
+ * @memberof KhiKrnxDriver
+ */
+void KhiKrnxDriver::change_ft_output_mode_srv_cb(
+  const khi_msgs::srv::ChangeFTOutputMode::Request::SharedPtr & req,
+  const khi_msgs::srv::ChangeFTOutputMode::Response::SharedPtr & /*resp*/)
+{
+  robot_.ft_sensor.enable_n_nm_output = req->enable_n_nm_output;
+  robot_.ft_sensor.counter_to_n_ratio = req->counter_to_n_ratio;
+  robot_.ft_sensor.counter_to_nm_ratio = req->counter_to_nm_ratio;
 }
 }  // namespace khi_hardware

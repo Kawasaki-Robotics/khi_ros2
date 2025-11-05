@@ -1,0 +1,31 @@
+# Executes the RDT command SetSoftwareBias on the ATI F/T sensor connected to the robot controller.
+#
+# Example
+#   > ros2 service call /khi_controller0/khi_service/set_ati_software_bias khi_msgs/srv/SetATISoftwareBias
+#   requester: making request: khi_msgs.srv.SetATISoftwareBias_Request()
+#
+#   response:
+#   khi_msgs.srv.SetATISoftwareBias_Response(success=True)
+#
+#   Note: The '0' in khi_controller0 changes according to controller_no specified in khi_bringup.launch.py.
+
+
+---
+
+bool success
+
+# Error returned as a result of executing krnx_ExecMon
+# For more details about the error, please refer to khi_hardware/docs/troubleshooting.md.
+# Note: If -0x1003 or -0x100e is stored in krnx_err, please increase the value of aux_timeout in the SetTimeout service.
+#       The default is set to 3000ms.
+string krnx_err
+
+# -1xxxx : Operation Error
+# -2xxxx : Mechanical/Control Warning
+# -3xxxx : Error
+# -4xxxx : Fatal Error
+int32 error_code
+
+# The error messages corresponding to the error codes are stored.
+# Please refer to Troubleshooting Manual for details.
+string error_msg

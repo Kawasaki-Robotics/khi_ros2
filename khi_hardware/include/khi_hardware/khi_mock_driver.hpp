@@ -22,9 +22,11 @@
 #include "khi_hardware/khi_driver.hpp"
 #include "khi_hardware/khi_periodic_data_config.hpp"
 #include "khi_hardware/khi_result_code.hpp"
+#include "khi_msgs/srv/change_ft_output_mode.hpp"
 #include "khi_msgs/srv/exec_khi_command.hpp"
 #include "khi_msgs/srv/get_signal.hpp"
 #include "khi_msgs/srv/reset_error.hpp"
+#include "khi_msgs/srv/set_ati_software_bias.hpp"
 #include "khi_msgs/srv/set_signal.hpp"
 #include "khi_msgs/srv/set_timeout.hpp"
 
@@ -68,6 +70,12 @@ public:
   void set_timeout_srv_cb(
     const khi_msgs::srv::SetTimeout::Request::SharedPtr & /*req*/,
     const khi_msgs::srv::SetTimeout::Response::SharedPtr & /*resp*/) const override {};
+  void set_ati_software_bias_srv_cb(
+    const khi_msgs::srv::SetATISoftwareBias::Request::SharedPtr & /*req*/,
+    const khi_msgs::srv::SetATISoftwareBias::Response::SharedPtr & /*resp*/) const override {};
+  void change_ft_output_mode_srv_cb(
+    const khi_msgs::srv::ChangeFTOutputMode::Request::SharedPtr & /*req*/,
+    const khi_msgs::srv::ChangeFTOutputMode::Response::SharedPtr & /*resp*/) override {};
   bool is_error() const override { return false; }
   bool get_error_info(
     std::vector<int> & /*error_codes*/, std::vector<std::string> & /*error_msgs*/) const override

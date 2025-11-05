@@ -21,8 +21,8 @@
     <ros2_control name="${robot_name}" type="system">
 
       <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/get_mechanical_parameters.xacro"/>
-
       <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/get_joint_limits.xacro"/>
+      <xacro:include filename="$(find khi_description)/urdf/khi_sensor.xacro"/>
 
       <xacro:property name="update_rate_path" value="$(find khi_description)/config/update_rate/${robot_controller}_controller_update_rate.yaml"/>
       <xacro:property name="update_rate_yaml" value="${xacro.load_yaml(update_rate_path)}"/>
@@ -121,6 +121,8 @@
         <param name="type"> ${jt6_type} </param>
         <param name="arm">arm1</param>
       </joint>
+
+      <xacro:khi_sensor prefix="$(arg prefix)"/>
     </ros2_control>
   </xacro:macro>
 </robot>

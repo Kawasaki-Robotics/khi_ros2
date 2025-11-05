@@ -1,0 +1,22 @@
+# Switch the output unit of the values obtained from the FT sensor (Counter [default] ⇔ N, Nm)
+#
+# Example
+#   > ros2 service call /khi_controller0/khi_service/change_ft_output_mode khi_msgs/srv/ChangeFTOutputMode "{enable_n_nm_output: true, counter_to_n_ratio: 0.000001, counter_to_nm_ratio: 0.000001 }"
+#   requester: making request: khi_msgs.srv.ChangeFTOutputMode_Request(enable_n_nm_output=True, counter_to_n_ratio=1e-06, counter_to_nm_ratio=1e-06)
+#
+#   response:
+#   khi_msgs.srv.ChangeFTOutputMode_Response()
+#
+#
+#   Note: The '0' in khi_controller0 changes according to controller_no specified in khi_bringup.launch.py.
+
+# true: output N or Nm instead, false: output counter value
+bool enable_n_nm_output
+
+# force [N] = counter_value * counter_to_n_ratio
+float64 counter_to_n_ratio
+
+# torque [N] = counter_value * counter_to_nm_ratio
+float64 counter_to_nm_ratio
+
+---

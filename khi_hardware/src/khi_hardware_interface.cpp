@@ -150,6 +150,20 @@ std::vector<hardware_interface::StateInterface> KhiHardwareInterface::export_sta
         arm.joint_names[jt], hardware_interface::HW_IF_EFFORT, &arm.state_efforts[jt]));
     }
   }
+
+  for (const auto & sensor : info_.sensors)
+  {
+    state_interfaces.emplace_back(sensor.name, "force.x", &driver_->get_robot().ft_sensor.force_x);
+    state_interfaces.emplace_back(sensor.name, "force.y", &driver_->get_robot().ft_sensor.force_y);
+    state_interfaces.emplace_back(sensor.name, "force.z", &driver_->get_robot().ft_sensor.force_z);
+    state_interfaces.emplace_back(
+      sensor.name, "torque.x", &driver_->get_robot().ft_sensor.torque_x);
+    state_interfaces.emplace_back(
+      sensor.name, "torque.y", &driver_->get_robot().ft_sensor.torque_y);
+    state_interfaces.emplace_back(
+      sensor.name, "torque.z", &driver_->get_robot().ft_sensor.torque_z);
+  }
+
   return state_interfaces;
 }
 

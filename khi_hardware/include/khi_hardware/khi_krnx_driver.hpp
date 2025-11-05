@@ -24,9 +24,11 @@
 #include "khi_hardware/khi_result_code.hpp"
 #include "khi_hardware/krnx.h"
 #include "khi_msgs/msg/error_info.hpp"
+#include "khi_msgs/srv/change_ft_output_mode.hpp"
 #include "khi_msgs/srv/exec_khi_command.hpp"
 #include "khi_msgs/srv/get_signal.hpp"
 #include "khi_msgs/srv/reset_error.hpp"
+#include "khi_msgs/srv/set_ati_software_bias.hpp"
 #include "khi_msgs/srv/set_signal.hpp"
 #include "khi_msgs/srv/set_timeout.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -75,6 +77,12 @@ public:
   void set_timeout_srv_cb(
     const khi_msgs::srv::SetTimeout::Request::SharedPtr & req,
     const khi_msgs::srv::SetTimeout::Response::SharedPtr & resp) const override;
+  void set_ati_software_bias_srv_cb(
+    const khi_msgs::srv::SetATISoftwareBias::Request::SharedPtr & req,
+    const khi_msgs::srv::SetATISoftwareBias::Response::SharedPtr & resp) const override;
+  void change_ft_output_mode_srv_cb(
+    const khi_msgs::srv::ChangeFTOutputMode::Request::SharedPtr & req,
+    const khi_msgs::srv::ChangeFTOutputMode::Response::SharedPtr & resp) override;
   bool is_error() const override;
   bool get_error_info(
     std::vector<int> & error_codes, std::vector<std::string> & error_msgs) const override;
@@ -124,6 +132,16 @@ private:
   static constexpr int KRNX_POS_UPPER_LIMIT_ERR = 0x01;
   static constexpr int KRNX_POS_LOWER_LIMIT_ERR = 0x02;
   static constexpr int KRNX_SPD_LIMIT_ERR = 0x04;
+
+  enum KrnxFTSensor
+  {
+    FORCE_X = 3,
+    FORCE_Y = 4,
+    FORCE_Z = 5,
+    TORQUE_X = 6,
+    TORQUE_Y = 7,
+    TORQUE_Z = 8,
+  };
 
   int seq_no_ = 0;
   bool is_japanese_;

@@ -36,6 +36,19 @@ struct KhiRobotArmData
   std::vector<std::string> control_modes{};
 };
 
+struct KhiFTSensor
+{
+  double force_x;
+  double force_y;
+  double force_z;
+  double torque_x;
+  double torque_y;
+  double torque_z;
+  double counter_to_n_ratio;        // force [N] = counter_value * counter_to_n_ratio
+  double counter_to_nm_ratio;       // torque [N] = counter_value * counter_to_nm_ratio
+  bool enable_n_nm_output = false;  // true: output N or Nm, false: output counter value
+};
+
 struct KhiRobot
 {
   std::string name;
@@ -43,6 +56,7 @@ struct KhiRobot
   double period;
   int controller_no;
   std::vector<KhiRobotArmData> arms;
+  KhiFTSensor ft_sensor;
 };
 }  // namespace khi_hardware
 #endif  // KHI_HARDWARE__KHI_ROBOT_HPP_

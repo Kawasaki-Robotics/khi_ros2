@@ -29,6 +29,8 @@ set(srv_files
   "srv/SetSignal.srv"
   "srv/ResetError.srv"
   "srv/SetTimeout.srv"
+  "srv/SetATISoftwareBias.srv"
+  "srv/ChangeFTOutputMode.srv"
 )
 rosidl_generate_interfaces(${PROJECT_NAME}
   ${msg_files}
