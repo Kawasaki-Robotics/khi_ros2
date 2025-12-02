@@ -877,6 +877,17 @@ bool KhiKrnxDriver::exec_rtc_program() const
         return false;
       }
 
+      // Detect errors caused by executing the robot program.
+      if (is_error())
+      {
+        rclcpp::sleep_for(std::chrono::milliseconds(500));  // Wait until the error code is updated.
+        krnx_GetCurErrorInfo(robot_.controller_no, arm_no, &error_code);
+        RCLCPP_ERROR(
+          rclcpp::get_logger("khi_hardware"), "AS ERROR controller_no:%d arm_no:%d error_code:%d",
+          robot_.controller_no, arm_no + 1, error_code);
+        return false;
+      }
+
       TKrnxCurRobotStatus status;
       const int return_code = krnx_GetCurRobotStatus(robot_.controller_no, arm_no, &status);
       if (return_code != KRNX_NOERROR)
