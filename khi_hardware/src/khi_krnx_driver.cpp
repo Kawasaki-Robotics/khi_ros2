@@ -162,6 +162,12 @@ KhiResultCode KhiKrnxDriver::activate()
     }
   }
 
+  // Reset an error because a warnig may occur after the motor is turned ON.
+  if (!reset_error())
+  {
+    return KhiResultCode::FAILURE;
+  }
+
   // Clear RTC Comp Data
   for (int arm_no = 0; arm_no < static_cast<int>(robot_.arms.size()); arm_no++)
   {
