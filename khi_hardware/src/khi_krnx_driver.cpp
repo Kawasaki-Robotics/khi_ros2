@@ -64,7 +64,10 @@ KhiResultCode KhiKrnxDriver::initialize()
 
 KhiResultCode KhiKrnxDriver::configure()
 {
-  set_periodic_data_config();
+  if (!set_periodic_data_config())
+  {
+    return KhiResultCode::ERROR;
+  }
 
   if (!open())
   {
@@ -121,7 +124,7 @@ KhiResultCode KhiKrnxDriver::configure()
   char msg_buf[KRNX_MSGSIZE];
   exec_monitor_command(
     robot_.controller_no, "ZPATHCONST_CALTIMEREDUCE ON", msg_buf, sizeof(msg_buf), &error_code,
-    true);
+    false);
 
   return KhiResultCode::SUCCESS;
 }
@@ -175,7 +178,8 @@ KhiResultCode KhiKrnxDriver::activate()
     if (return_code != KRNX_NOERROR)
     {
       RCLCPP_ERROR(
-        rclcpp::get_logger("khi_hardware"), "krnx_OldCompClear returned -0x%X", -return_code);
+        rclcpp::get_logger("khi_hardware"), "krnx_OldCompClear returned -0x%X arm_no:%d",
+        -return_code, arm_no + 1);
       return KhiResultCode::FAILURE;
     }
   }
@@ -668,7 +672,6 @@ bool KhiKrnxDriver::kill_program(const bool need_log) const
  */
 bool KhiKrnxDriver::is_program_running() const
 {
-  bool is_program_running = true;
   for (int arm_no = 0; arm_no < static_cast<int>(robot_.arms.size()); arm_no++)
   {
     TKrnxCurRobotStatus status;
@@ -680,12 +683,12 @@ bool KhiKrnxDriver::is_program_running() const
       return false;
     }
 
-    if (status.cycle_lamp == OFF)
+    if (status.cycle_lamp == ON)
     {
-      is_program_running = false;
+      return true;
     }
   }
-  return is_program_running;
+  return false;
 }
 
 /**
@@ -712,7 +715,8 @@ bool KhiKrnxDriver::reset_error() const
     if (return_code != KRNX_NOERROR)
     {
       RCLCPP_ERROR(
-        rclcpp::get_logger("khi_hardware"), "krnx_GetCurErrorLamp returned -0x%X", -return_code);
+        rclcpp::get_logger("khi_hardware"), "krnx_GetCurErrorLamp returned -0x%X arm_no:%d",
+        -return_code, arm_no + 1);
       return false;
     }
 
@@ -1047,7 +1051,8 @@ void KhiKrnxDriver::report_write_error() const
         (krnx_arm_data_[arm_no].status[jt] & KRNX_POS_UPPER_LIMIT_ERR) ||
         (krnx_arm_data_[arm_no].status[jt] & KRNX_POS_LOWER_LIMIT_ERR))
       {
-        std::string msg = "A commanded position exceeding the operating range was sent. ";
+        std::string msg = "A commanded position exceeding the operating range was sent [arm_no:" +
+                          std::to_string(arm_no + 1) + "].";
         msg += ("( JT" + std::to_string(jt + 1));
         msg += (" cmd:" + std::to_string(cmd));
         msg += is_prismatic ? "[m]" : "[deg]";
@@ -1064,7 +1069,8 @@ void KhiKrnxDriver::report_write_error() const
         spd *= is_prismatic ? MM2M : RAD2DEG;
         spd_limit *= is_prismatic ? MM2M : RAD2DEG;
 
-        std::string msg = "A commanded position exceeding the speed limit was sent. ";
+        std::string msg = "A commanded position exceeding the speed limit was sent [arm_no:" +
+                          std::to_string(arm_no + 1) + "].";
         msg += ("( JT" + std::to_string(jt + 1));
         msg += (" cmd:" + std::to_string(cmd));
         msg += is_prismatic ? "[m]" : "[deg]";
@@ -1139,6 +1145,15 @@ bool KhiKrnxDriver::load_rtc_program() const
     fprintf(fp, "  GOTO 1\n");
     fprintf(fp, "  RTC_SW 1: OFF\n");
     fprintf(fp, ".END\n");
+    if (static_cast<int>(robot_.arms.size()) == 2)
+    {
+      fprintf(fp, ".PROGRAM rb_rtc2()\n");
+      fprintf(fp, "  RTC_SW 2: ON\n");
+      fprintf(fp, "1 RTC_CTL\n");
+      fprintf(fp, "  GOTO 1\n");
+      fprintf(fp, "  RTC_SW 2: OFF\n");
+      fprintf(fp, ".END\n");
+    }
     fclose(fp);
   }
   else
@@ -1638,15 +1653,15 @@ void KhiKrnxDriver::monitor_robot_health()
   static unsigned int cnt = 0;
   for (int arm_no = 0; arm_no < static_cast<int>(robot_.arms.size()); arm_no++)
   {
-    TKrnxCurMotionDataEx data[KRNX_MAX_ROBOT];
-    if (!get_curmotion_data_ex(robot_.controller_no, arm_no, &data[arm_no]))
+    TKrnxCurMotionDataEx data;
+    if (!get_curmotion_data_ex(robot_.controller_no, arm_no, &data))
     {
       continue;
     }
 
     for (int jt = 0; jt < robot_.arms[arm_no].joint_num; jt++)
     {
-      is_saturated[arm_no][jt][cnt] = (data->cur_sat[jt] >= 1.0);
+      is_saturated[arm_no][jt][cnt] = (data.cur_sat[jt] >= 1.0);
 
       int err_cnt = 0;
       for (auto is_sat : is_saturated[arm_no][jt])
@@ -1660,9 +1675,9 @@ void KhiKrnxDriver::monitor_robot_health()
       {
         RCLCPP_WARN(
           rclcpp::get_logger("khi_hardware"),
-          "The current is saturated. Please reduce the acceleration or change the motion. [JT%d "
-          "%f]",
-          jt + 1, data->cur_sat[jt]);
+          "The current is saturated. Please reduce the acceleration or change the motion. "
+          "[arm_no:%d JT%d %f]",
+          arm_no + 1, jt + 1, data.cur_sat[jt]);
         for (auto & is_sat : is_saturated[arm_no][jt])
         {
           is_sat = false;
@@ -1727,7 +1742,7 @@ void KhiKrnxDriver::handle_krnx_error(
 /**
  * @brief Set the type of information that the robot periodically retrieves.
  */
-void KhiKrnxDriver::set_periodic_data_config() const
+bool KhiKrnxDriver::set_periodic_data_config() const
 {
   u_int16_t kind = KRNX_CYC_KIND_ANGLE | KRNX_CYC_KIND_ANGLE_REF | KRNX_CYC_KIND_ERROR |
                    KRNX_CYC_KIND_CURRENT_SAT | KRNX_CYC_KIND_ANGLE_VEL | KRNX_CYC_KIND_ROBOT_STATUS;
@@ -1761,9 +1776,18 @@ void KhiKrnxDriver::set_periodic_data_config() const
   }
   if (periodic_data_config_.is_ft_sensor_enabled)
   {
+    if (robot_.name.find("wd") != std::string::npos)
+    {
+      RCLCPP_ERROR(
+        rclcpp::get_logger("khi_hardware"),
+        "duAro2 does not support the F/T sensor streaming function.");
+      return false;
+    }
     kind |= KRNX_CYC_KIND_EXTRA_DATA;
   }
   krnx_SetRtCyclicDataKind(robot_.controller_no, kind);
+
+  return true;
 }
 
 /**

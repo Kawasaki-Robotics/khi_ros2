@@ -1,0 +1,11 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 250 # Hz
+
+khi_lower_arm_controller:
+  ros__parameters:
+    state_publish_rate: 250.0 # Defaults to 50
+
+khi_upper_arm_controller:
+  ros__parameters:
+    state_publish_rate: 250.0 # Defaults to 50

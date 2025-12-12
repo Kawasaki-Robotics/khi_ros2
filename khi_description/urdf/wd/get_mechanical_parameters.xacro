@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="mech_para_path" value="$(find khi_description)/config/$(arg robot_series)/$(arg robot_name)/mechanical_parameters.yaml"/>
+  <xacro:property name="mechanical_parameters" value="${xacro.load_yaml(mech_para_path)}"/>
+
+  <!-- mass  -->
+  <xacro:property name="link0_mass" value="${mechanical_parameters['link']['mass']['l0']}"/>
+  <xacro:property name="upper_link1_mass" value="${mechanical_parameters['link']['mass']['upper_l1']}"/>
+  <xacro:property name="upper_link2_mass" value="${mechanical_parameters['link']['mass']['upper_l2']}"/>
+  <xacro:property name="upper_link3_mass" value="${mechanical_parameters['link']['mass']['upper_l3']}"/>
+  <xacro:property name="upper_link4_mass" value="${mechanical_parameters['link']['mass']['upper_l4']}"/>
+  <xacro:property name="upper_link3_mimic1_mass" value="${mechanical_parameters['link']['mass']['upper_l3_mimic1']}"/>
+  <xacro:property name="upper_link3_mimic2_mass" value="${mechanical_parameters['link']['mass']['upper_l3_mimic2']}"/>
+  <xacro:property name="lower_link1_mass" value="${mechanical_parameters['link']['mass']['lower_l1']}"/>
+  <xacro:property name="lower_link2_mass" value="${mechanical_parameters['link']['mass']['lower_l2']}"/>
+  <xacro:property name="lower_link3_mass" value="${mechanical_parameters['link']['mass']['lower_l3']}"/>
+  <xacro:property name="lower_link4_mass" value="${mechanical_parameters['link']['mass']['lower_l4']}"/>
+  <xacro:property name="lower_link3_mimic1_mass" value="${mechanical_parameters['link']['mass']['lower_l3_mimic1']}"/>
+  <xacro:property name="lower_link3_mimic2_mass" value="${mechanical_parameters['link']['mass']['lower_l3_mimic2']}"/>
+
+  <!-- center of mass  -->
+  <xacro:property name="link0_mass_x" value="${mechanical_parameters['link']['center_of_mass']['l0']['x']}"/>
+  <xacro:property name="link0_mass_y" value="${mechanical_parameters['link']['center_of_mass']['l0']['y']}"/>
+  <xacro:property name="link0_mass_z" value="${mechanical_parameters['link']['center_of_mass']['l0']['z']}"/>
+  <xacro:property name="upper_link1_mass_x" value="${mechanical_parameters['link']['center_of_mass']['upper_l1']['x']}"/>
+  <xacro:property name="upper_link1_mass_y" value="${mechanical_parameters['link']['center_of_mass']['upper_l1']['y']}"/>
+  <xacro:property name="upper_link1_mass_z" value="${mechanical_parameters['link']['center_of_mass']['upper_l1']['z']}"/>
+  <xacro:property name="upper_link2_mass_x" value="${mechanical_parameters['link']['center_of_mass']['upper_l2']['x']}"/>
+  <xacro:property name="upper_link2_mass_y" value="${mechanical_parameters['link']['center_of_mass']['upper_l2']['y']}"/>
+  <xacro:property name="upper_link2_mass_z" value="${mechanical_parameters['link']['center_of_mass']['upper_l2']['z']}"/>
+  <xacro:property name="upper_link3_mass_x" value="${mechanical_parameters['link']['center_of_mass']['upper_l3']['x']}"/>
+  <xacro:property name="upper_link3_mass_y" value="${mechanical_parameters['link']['center_of_mass']['upper_l3']['y']}"/>
+  <xacro:property name="upper_link3_mass_z" value="${mechanical_parameters['link']['center_of_mass']['upper_l3']['z']}"/>
+  <xacro:property name="upper_link4_mass_x" value="${mechanical_parameters['link']['center_of_mass']['upper_l4']['x']}"/>
+  <xacro:property name="upper_link4_mass_y" value="${mechanical_parameters['link']['center_of_mass']['upper_l4']['y']}"/>
+  <xacro:property name="upper_link4_mass_z" value="${mechanical_parameters['link']['center_of_mass']['upper_l4']['z']}"/>
+  <xacro:property name="upper_link3_mimic1_mass_x" value="${mechanical_parameters['link']['center_of_mass']['upper_l3_mimic1']['x']}"/>
+  <xacro:property name="upper_link3_mimic1_mass_y" value="${mechanical_parameters['link']['center_of_mass']['upper_l3_mimic1']['y']}"/>
+  <xacro:property name="upper_link3_mimic1_mass_z" value="${mechanical_parameters['link']['center_of_mass']['upper_l3_mimic1']['z']}"/>
+  <xacro:property name="upper_link3_mimic2_mass_x" value="${mechanical_parameters['link']['center_of_mass']['upper_l3_mimic2']['x']}"/>
+  <xacro:property name="upper_link3_mimic2_mass_y" value="${mechanical_parameters['link']['center_of_mass']['upper_l3_mimic2']['y']}"/>
+  <xacro:property name="upper_link3_mimic2_mass_z" value="${mechanical_parameters['link']['center_of_mass']['upper_l3_mimic2']['z']}"/>
+  <xacro:property name="lower_link1_mass_x" value="${mechanical_parameters['link']['center_of_mass']['lower_l1']['x']}"/>
+  <xacro:property name="lower_link1_mass_y" value="${mechanical_parameters['link']['center_of_mass']['lower_l1']['y']}"/>
+  <xacro:property name="lower_link1_mass_z" value="${mechanical_parameters['link']['center_of_mass']['lower_l1']['z']}"/>
+  <xacro:property name="lower_link2_mass_x" value="${mechanical_parameters['link']['center_of_mass']['lower_l2']['x']}"/>
+  <xacro:property name="lower_link2_mass_y" value="${mechanical_parameters['link']['center_of_mass']['lower_l2']['y']}"/>
+  <xacro:property name="lower_link2_mass_z" value="${mechanical_parameters['link']['center_of_mass']['lower_l2']['z']}"/>
+  <xacro:property name="lower_link3_mass_x" value="${mechanical_parameters['link']['center_of_mass']['lower_l3']['x']}"/>
+  <xacro:property name="lower_link3_mass_y" value="${mechanical_parameters['link']['center_of_mass']['lower_l3']['y']}"/>
+  <xacro:property name="lower_link3_mass_z" value="${mechanical_parameters['link']['center_of_mass']['lower_l3']['z']}"/>
+  <xacro:property name="lower_link4_mass_x" value="${mechanical_parameters['link']['center_of_mass']['lower_l4']['x']}"/>
+  <xacro:property name="lower_link4_mass_y" value="${mechanical_parameters['link']['center_of_mass']['lower_l4']['y']}"/>
+  <xacro:property name="lower_link4_mass_z" value="${mechanical_parameters['link']['center_of_mass']['lower_l4']['z']}"/>
+  <xacro:property name="lower_link3_mimic1_mass_x" value="${mechanical_parameters['link']['center_of_mass']['lower_l3_mimic1']['x']}"/>
+  <xacro:property name="lower_link3_mimic1_mass_y" value="${mechanical_parameters['link']['center_of_mass']['lower_l3_mimic1']['y']}"/>
+  <xacro:property name="lower_link3_mimic1_mass_z" value="${mechanical_parameters['link']['center_of_mass']['lower_l3_mimic1']['z']}"/>
+  <xacro:property name="lower_link3_mimic2_mass_x" value="${mechanical_parameters['link']['center_of_mass']['lower_l3_mimic2']['x']}"/>
+  <xacro:property name="lower_link3_mimic2_mass_y" value="${mechanical_parameters['link']['center_of_mass']['lower_l3_mimic2']['y']}"/>
+  <xacro:property name="lower_link3_mimic2_mass_z" value="${mechanical_parameters['link']['center_of_mass']['lower_l3_mimic2']['z']}"/>
+
+  <!-- inertia  -->
+  <xacro:property name="link0_ixx" value="${mechanical_parameters['link']['inertia']['l0']['ixx']}"/>
+  <xacro:property name="link0_ixy" value="${mechanical_parameters['link']['inertia']['l0']['ixy']}"/>
+  <xacro:property name="link0_ixz" value="${mechanical_parameters['link']['inertia']['l0']['ixz']}"/>
+  <xacro:property name="link0_iyy" value="${mechanical_parameters['link']['inertia']['l0']['iyy']}"/>
+  <xacro:property name="link0_iyz" value="${mechanical_parameters['link']['inertia']['l0']['iyz']}"/>
+  <xacro:property name="link0_izz" value="${mechanical_parameters['link']['inertia']['l0']['izz']}"/>
+  <xacro:property name="upper_link1_ixx" value="${mechanical_parameters['link']['inertia']['upper_l1']['ixx']}"/>
+  <xacro:property name="upper_link1_ixy" value="${mechanical_parameters['link']['inertia']['upper_l1']['ixy']}"/>
+  <xacro:property name="upper_link1_ixz" value="${mechanical_parameters['link']['inertia']['upper_l1']['ixz']}"/>
+  <xacro:property name="upper_link1_iyy" value="${mechanical_parameters['link']['inertia']['upper_l1']['iyy']}"/>
+  <xacro:property name="upper_link1_iyz" value="${mechanical_parameters['link']['inertia']['upper_l1']['iyz']}"/>
+  <xacro:property name="upper_link1_izz" value="${mechanical_parameters['link']['inertia']['upper_l1']['izz']}"/>
+  <xacro:property name="upper_link2_ixx" value="${mechanical_parameters['link']['inertia']['upper_l2']['ixx']}"/>
+  <xacro:property name="upper_link2_ixy" value="${mechanical_parameters['link']['inertia']['upper_l2']['ixy']}"/>
+  <xacro:property name="upper_link2_ixz" value="${mechanical_parameters['link']['inertia']['upper_l2']['ixz']}"/>
+  <xacro:property name="upper_link2_iyy" value="${mechanical_parameters['link']['inertia']['upper_l2']['iyy']}"/>
+  <xacro:property name="upper_link2_iyz" value="${mechanical_parameters['link']['inertia']['upper_l2']['iyz']}"/>
+  <xacro:property name="upper_link2_izz" value="${mechanical_parameters['link']['inertia']['upper_l2']['izz']}"/>
+  <xacro:property name="upper_link3_ixx" value="${mechanical_parameters['link']['inertia']['upper_l3']['ixx']}"/>
+  <xacro:property name="upper_link3_ixy" value="${mechanical_parameters['link']['inertia']['upper_l3']['ixy']}"/>
+  <xacro:property name="upper_link3_ixz" value="${mechanical_parameters['link']['inertia']['upper_l3']['ixz']}"/>
+  <xacro:property name="upper_link3_iyy" value="${mechanical_parameters['link']['inertia']['upper_l3']['iyy']}"/>
+  <xacro:property name="upper_link3_iyz" value="${mechanical_parameters['link']['inertia']['upper_l3']['iyz']}"/>
+  <xacro:property name="upper_link3_izz" value="${mechanical_parameters['link']['inertia']['upper_l3']['izz']}"/>
+  <xacro:property name="upper_link4_ixx" value="${mechanical_parameters['link']['inertia']['upper_l4']['ixx']}"/>
+  <xacro:property name="upper_link4_ixy" value="${mechanical_parameters['link']['inertia']['upper_l4']['ixy']}"/>
+  <xacro:property name="upper_link4_ixz" value="${mechanical_parameters['link']['inertia']['upper_l4']['ixz']}"/>
+  <xacro:property name="upper_link4_iyy" value="${mechanical_parameters['link']['inertia']['upper_l4']['iyy']}"/>
+  <xacro:property name="upper_link4_iyz" value="${mechanical_parameters['link']['inertia']['upper_l4']['iyz']}"/>
+  <xacro:property name="upper_link4_izz" value="${mechanical_parameters['link']['inertia']['upper_l4']['izz']}"/>
+  <xacro:property name="upper_link3_mimic1_ixx" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic1']['ixx']}"/>
+  <xacro:property name="upper_link3_mimic1_ixy" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic1']['ixy']}"/>
+  <xacro:property name="upper_link3_mimic1_ixz" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic1']['ixz']}"/>
+  <xacro:property name="upper_link3_mimic1_iyy" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic1']['iyy']}"/>
+  <xacro:property name="upper_link3_mimic1_iyz" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic1']['iyz']}"/>
+  <xacro:property name="upper_link3_mimic1_izz" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic1']['izz']}"/>
+  <xacro:property name="upper_link3_mimic2_ixx" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic2']['ixx']}"/>
+  <xacro:property name="upper_link3_mimic2_ixy" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic2']['ixy']}"/>
+  <xacro:property name="upper_link3_mimic2_ixz" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic2']['ixz']}"/>
+  <xacro:property name="upper_link3_mimic2_iyy" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic2']['iyy']}"/>
+  <xacro:property name="upper_link3_mimic2_iyz" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic2']['iyz']}"/>
+  <xacro:property name="upper_link3_mimic2_izz" value="${mechanical_parameters['link']['inertia']['upper_l3_mimic2']['izz']}"/>
+  <xacro:property name="lower_link1_ixx" value="${mechanical_parameters['link']['inertia']['lower_l1']['ixx']}"/>
+  <xacro:property name="lower_link1_ixy" value="${mechanical_parameters['link']['inertia']['lower_l1']['ixy']}"/>
+  <xacro:property name="lower_link1_ixz" value="${mechanical_parameters['link']['inertia']['lower_l1']['ixz']}"/>
+  <xacro:property name="lower_link1_iyy" value="${mechanical_parameters['link']['inertia']['lower_l1']['iyy']}"/>
+  <xacro:property name="lower_link1_iyz" value="${mechanical_parameters['link']['inertia']['lower_l1']['iyz']}"/>
+  <xacro:property name="lower_link1_izz" value="${mechanical_parameters['link']['inertia']['lower_l1']['izz']}"/>
+  <xacro:property name="lower_link2_ixx" value="${mechanical_parameters['link']['inertia']['lower_l2']['ixx']}"/>
+  <xacro:property name="lower_link2_ixy" value="${mechanical_parameters['link']['inertia']['lower_l2']['ixy']}"/>
+  <xacro:property name="lower_link2_ixz" value="${mechanical_parameters['link']['inertia']['lower_l2']['ixz']}"/>
+  <xacro:property name="lower_link2_iyy" value="${mechanical_parameters['link']['inertia']['lower_l2']['iyy']}"/>
+  <xacro:property name="lower_link2_iyz" value="${mechanical_parameters['link']['inertia']['lower_l2']['iyz']}"/>
+  <xacro:property name="lower_link2_izz" value="${mechanical_parameters['link']['inertia']['lower_l2']['izz']}"/>
+  <xacro:property name="lower_link3_ixx" value="${mechanical_parameters['link']['inertia']['lower_l3']['ixx']}"/>
+  <xacro:property name="lower_link3_ixy" value="${mechanical_parameters['link']['inertia']['lower_l3']['ixy']}"/>
+  <xacro:property name="lower_link3_ixz" value="${mechanical_parameters['link']['inertia']['lower_l3']['ixz']}"/>
+  <xacro:property name="lower_link3_iyy" value="${mechanical_parameters['link']['inertia']['lower_l3']['iyy']}"/>
+  <xacro:property name="lower_link3_iyz" value="${mechanical_parameters['link']['inertia']['lower_l3']['iyz']}"/>
+  <xacro:property name="lower_link3_izz" value="${mechanical_parameters['link']['inertia']['lower_l3']['izz']}"/>
+  <xacro:property name="lower_link4_ixx" value="${mechanical_parameters['link']['inertia']['lower_l4']['ixx']}"/>
+  <xacro:property name="lower_link4_ixy" value="${mechanical_parameters['link']['inertia']['lower_l4']['ixy']}"/>
+  <xacro:property name="lower_link4_ixz" value="${mechanical_parameters['link']['inertia']['lower_l4']['ixz']}"/>
+  <xacro:property name="lower_link4_iyy" value="${mechanical_parameters['link']['inertia']['lower_l4']['iyy']}"/>
+  <xacro:property name="lower_link4_iyz" value="${mechanical_parameters['link']['inertia']['lower_l4']['iyz']}"/>
+  <xacro:property name="lower_link4_izz" value="${mechanical_parameters['link']['inertia']['lower_l4']['izz']}"/>
+  <xacro:property name="lower_link3_mimic1_ixx" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic1']['ixx']}"/>
+  <xacro:property name="lower_link3_mimic1_ixy" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic1']['ixy']}"/>
+  <xacro:property name="lower_link3_mimic1_ixz" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic1']['ixz']}"/>
+  <xacro:property name="lower_link3_mimic1_iyy" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic1']['iyy']}"/>
+  <xacro:property name="lower_link3_mimic1_iyz" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic1']['iyz']}"/>
+  <xacro:property name="lower_link3_mimic1_izz" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic1']['izz']}"/>
+  <xacro:property name="lower_link3_mimic2_ixx" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic2']['ixx']}"/>
+  <xacro:property name="lower_link3_mimic2_ixy" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic2']['ixy']}"/>
+  <xacro:property name="lower_link3_mimic2_ixz" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic2']['ixz']}"/>
+  <xacro:property name="lower_link3_mimic2_iyy" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic2']['iyy']}"/>
+  <xacro:property name="lower_link3_mimic2_iyz" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic2']['iyz']}"/>
+  <xacro:property name="lower_link3_mimic2_izz" value="${mechanical_parameters['link']['inertia']['lower_l3_mimic2']['izz']}"/>
+
+  <xacro:property name="upper_jt1_type" value="${mechanical_parameters['joint']['type']['upper_j1']}"/>
+  <xacro:property name="upper_jt2_type" value="${mechanical_parameters['joint']['type']['upper_j2']}"/>
+  <xacro:property name="upper_jt3_type" value="${mechanical_parameters['joint']['type']['upper_j3']}"/>
+  <xacro:property name="upper_jt4_type" value="${mechanical_parameters['joint']['type']['upper_j4']}"/>
+  <xacro:property name="upper_mimic_jt1_type" value="${mechanical_parameters['joint']['type']['upper_j3_mimic1']}"/>
+  <xacro:property name="upper_mimic_jt2_type" value="${mechanical_parameters['joint']['type']['upper_j3_mimic2']}"/>
+  <xacro:property name="lower_jt1_type" value="${mechanical_parameters['joint']['type']['lower_j1']}"/>
+  <xacro:property name="lower_jt2_type" value="${mechanical_parameters['joint']['type']['lower_j2']}"/>
+  <xacro:property name="lower_jt3_type" value="${mechanical_parameters['joint']['type']['lower_j3']}"/>
+  <xacro:property name="lower_jt4_type" value="${mechanical_parameters['joint']['type']['lower_j4']}"/>
+  <xacro:property name="lower_jt3_mimic1_type" value="${mechanical_parameters['joint']['type']['lower_j3_mimic1']}"/>
+  <xacro:property name="lower_jt3_mimic2_type" value="${mechanical_parameters['joint']['type']['lower_j3_mimic2']}"/>
+
+  <!-- link length  -->
+  <xacro:property name="cart_x" value="${mechanical_parameters['link']['length']['cart']['x']}"/>
+  <xacro:property name="cart_y" value="${mechanical_parameters['link']['length']['cart']['y']}"/>
+  <xacro:property name="cart_z" value="${mechanical_parameters['link']['length']['cart']['z']}"/>
+  <xacro:property name="l0_x" value="${mechanical_parameters['link']['length']['l0']['x']}"/>
+  <xacro:property name="l0_y" value="${mechanical_parameters['link']['length']['l0']['y']}"/>
+  <xacro:property name="l0_z" value="${mechanical_parameters['link']['length']['l0']['z']}"/>
+  <xacro:property name="upper_l1_x" value="${mechanical_parameters['link']['length']['upper_l1']['x']}"/>
+  <xacro:property name="upper_l1_y" value="${mechanical_parameters['link']['length']['upper_l1']['y']}"/>
+  <xacro:property name="upper_l1_z" value="${mechanical_parameters['link']['length']['upper_l1']['z']}"/>
+  <xacro:property name="upper_l2_x" value="${mechanical_parameters['link']['length']['upper_l2']['x']}"/>
+  <xacro:property name="upper_l2_y" value="${mechanical_parameters['link']['length']['upper_l2']['y']}"/>
+  <xacro:property name="upper_l2_z" value="${mechanical_parameters['link']['length']['upper_l2']['z']}"/>
+  <xacro:property name="upper_l3_x" value="${mechanical_parameters['link']['length']['upper_l3']['x']}"/>
+  <xacro:property name="upper_l3_y" value="${mechanical_parameters['link']['length']['upper_l3']['y']}"/>
+  <xacro:property name="upper_l3_z" value="${mechanical_parameters['link']['length']['upper_l3']['z']}"/>
+  <xacro:property name="upper_l3_mimic1_x" value="${mechanical_parameters['link']['length']['upper_l3_mimic1']['x']}"/>
+  <xacro:property name="upper_l3_mimic1_y" value="${mechanical_parameters['link']['length']['upper_l3_mimic1']['y']}"/>
+  <xacro:property name="upper_l3_mimic1_z" value="${mechanical_parameters['link']['length']['upper_l3_mimic1']['z']}"/>
+  <xacro:property name="upper_l3_mimic2_x" value="${mechanical_parameters['link']['length']['upper_l3_mimic2']['x']}"/>
+  <xacro:property name="upper_l3_mimic2_y" value="${mechanical_parameters['link']['length']['upper_l3_mimic2']['y']}"/>
+  <xacro:property name="upper_l3_mimic2_z" value="${mechanical_parameters['link']['length']['upper_l3_mimic2']['z']}"/>
+  <xacro:property name="lower_l1_x" value="${mechanical_parameters['link']['length']['lower_l1']['x']}"/>
+  <xacro:property name="lower_l1_y" value="${mechanical_parameters['link']['length']['lower_l1']['y']}"/>
+  <xacro:property name="lower_l1_z" value="${mechanical_parameters['link']['length']['lower_l1']['z']}"/>
+  <xacro:property name="lower_l2_x" value="${mechanical_parameters['link']['length']['lower_l2']['x']}"/>
+  <xacro:property name="lower_l2_y" value="${mechanical_parameters['link']['length']['lower_l2']['y']}"/>
+  <xacro:property name="lower_l2_z" value="${mechanical_parameters['link']['length']['lower_l2']['z']}"/>
+  <xacro:property name="lower_l3_x" value="${mechanical_parameters['link']['length']['lower_l3']['x']}"/>
+  <xacro:property name="lower_l3_y" value="${mechanical_parameters['link']['length']['lower_l3']['y']}"/>
+  <xacro:property name="lower_l3_z" value="${mechanical_parameters['link']['length']['lower_l3']['z']}"/>
+  <xacro:property name="lower_l3_mimic1_x" value="${mechanical_parameters['link']['length']['lower_l3_mimic1']['x']}"/>
+  <xacro:property name="lower_l3_mimic1_y" value="${mechanical_parameters['link']['length']['lower_l3_mimic1']['y']}"/>
+  <xacro:property name="lower_l3_mimic1_z" value="${mechanical_parameters['link']['length']['lower_l3_mimic1']['z']}"/>
+  <xacro:property name="lower_l3_mimic2_x" value="${mechanical_parameters['link']['length']['lower_l3_mimic2']['x']}"/>
+  <xacro:property name="lower_l3_mimic2_y" value="${mechanical_parameters['link']['length']['lower_l3_mimic2']['y']}"/>
+  <xacro:property name="lower_l3_mimic2_z" value="${mechanical_parameters['link']['length']['lower_l3_mimic2']['z']}"/>
+
+  <!-- 3D model posture  -->
+  <xacro:property name="upper_l1_rpy_x" value="${mechanical_parameters['link']['rpy']['upper_l1']['x']}"/>
+  <xacro:property name="upper_l1_rpy_y" value="${mechanical_parameters['link']['rpy']['upper_l1']['y']}"/>
+  <xacro:property name="upper_l1_rpy_z" value="${mechanical_parameters['link']['rpy']['upper_l1']['z']}"/>
+  <xacro:property name="upper_l2_rpy_x" value="${mechanical_parameters['link']['rpy']['upper_l2']['x']}"/>
+  <xacro:property name="upper_l2_rpy_y" value="${mechanical_parameters['link']['rpy']['upper_l2']['y']}"/>
+  <xacro:property name="upper_l2_rpy_z" value="${mechanical_parameters['link']['rpy']['upper_l2']['z']}"/>
+  <xacro:property name="upper_l3_rpy_x" value="${mechanical_parameters['link']['rpy']['upper_l3']['x']}"/>
+  <xacro:property name="upper_l3_rpy_y" value="${mechanical_parameters['link']['rpy']['upper_l3']['y']}"/>
+  <xacro:property name="upper_l3_rpy_z" value="${mechanical_parameters['link']['rpy']['upper_l3']['z']}"/>
+  <xacro:property name="upper_l4_rpy_x" value="${mechanical_parameters['link']['rpy']['upper_l4']['x']}"/>
+  <xacro:property name="upper_l4_rpy_y" value="${mechanical_parameters['link']['rpy']['upper_l4']['y']}"/>
+  <xacro:property name="upper_l4_rpy_z" value="${mechanical_parameters['link']['rpy']['upper_l4']['z']}"/>
+  <xacro:property name="upper_l3_mimic1_rpy_x" value="${mechanical_parameters['link']['rpy']['upper_l3_mimic1']['x']}"/>
+  <xacro:property name="upper_l3_mimic1_rpy_y" value="${mechanical_parameters['link']['rpy']['upper_l3_mimic1']['y']}"/>
+  <xacro:property name="upper_l3_mimic1_rpy_z" value="${mechanical_parameters['link']['rpy']['upper_l3_mimic1']['z']}"/>
+  <xacro:property name="upper_l3_mimic2_rpy_x" value="${mechanical_parameters['link']['rpy']['upper_l3_mimic2']['x']}"/>
+  <xacro:property name="upper_l3_mimic2_rpy_y" value="${mechanical_parameters['link']['rpy']['upper_l3_mimic2']['y']}"/>
+  <xacro:property name="upper_l3_mimic2_rpy_z" value="${mechanical_parameters['link']['rpy']['upper_l3_mimic2']['z']}"/>
+  <xacro:property name="lower_l1_rpy_x" value="${mechanical_parameters['link']['rpy']['lower_l1']['x']}"/>
+  <xacro:property name="lower_l1_rpy_y" value="${mechanical_parameters['link']['rpy']['lower_l1']['y']}"/>
+  <xacro:property name="lower_l1_rpy_z" value="${mechanical_parameters['link']['rpy']['lower_l1']['z']}"/>
+  <xacro:property name="lower_l2_rpy_x" value="${mechanical_parameters['link']['rpy']['lower_l2']['x']}"/>
+  <xacro:property name="lower_l2_rpy_y" value="${mechanical_parameters['link']['rpy']['lower_l2']['y']}"/>
+  <xacro:property name="lower_l2_rpy_z" value="${mechanical_parameters['link']['rpy']['lower_l2']['z']}"/>
+  <xacro:property name="lower_l3_rpy_x" value="${mechanical_parameters['link']['rpy']['lower_l3']['x']}"/>
+  <xacro:property name="lower_l3_rpy_y" value="${mechanical_parameters['link']['rpy']['lower_l3']['y']}"/>
+  <xacro:property name="lower_l3_rpy_z" value="${mechanical_parameters['link']['rpy']['lower_l3']['z']}"/>
+  <xacro:property name="lower_l4_rpy_x" value="${mechanical_parameters['link']['rpy']['lower_l4']['x']}"/>
+  <xacro:property name="lower_l4_rpy_y" value="${mechanical_parameters['link']['rpy']['lower_l4']['y']}"/>
+  <xacro:property name="lower_l4_rpy_z" value="${mechanical_parameters['link']['rpy']['lower_l4']['z']}"/>
+  <xacro:property name="lower_l3_mimic1_rpy_x" value="${mechanical_parameters['link']['rpy']['lower_l3_mimic1']['x']}"/>
+  <xacro:property name="lower_l3_mimic1_rpy_y" value="${mechanical_parameters['link']['rpy']['lower_l3_mimic1']['y']}"/>
+  <xacro:property name="lower_l3_mimic1_rpy_z" value="${mechanical_parameters['link']['rpy']['lower_l3_mimic1']['z']}"/>
+  <xacro:property name="lower_l3_mimic2_rpy_x" value="${mechanical_parameters['link']['rpy']['lower_l3_mimic2']['x']}"/>
+  <xacro:property name="lower_l3_mimic2_rpy_y" value="${mechanical_parameters['link']['rpy']['lower_l3_mimic2']['y']}"/>
+  <xacro:property name="lower_l3_mimic2_rpy_z" value="${mechanical_parameters['link']['rpy']['lower_l3_mimic2']['z']}"/>
+
+  <!-- axis direction  -->
+  <xacro:property name="upper_axis1" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['upper_j1']))}"/>
+  <xacro:property name="upper_axis2" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['upper_j2']))}"/>
+  <xacro:property name="upper_axis3" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['upper_j3']))}"/>
+  <xacro:property name="upper_axis4" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['upper_j4']))}"/>
+  <xacro:property name="upper_mimic_axis1" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['upper_j3_mimic1']))}"/>
+  <xacro:property name="upper_mimic_axis2" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['upper_j3_mimic2']))}"/>
+  <xacro:property name="lower_axis1" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['lower_j1']))}"/>
+  <xacro:property name="lower_axis2" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['lower_j2']))}"/>
+  <xacro:property name="lower_axis3" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['lower_j3']))}"/>
+  <xacro:property name="lower_axis4" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['lower_j4']))}"/>
+  <xacro:property name="lower_axis3_mimic1" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['lower_j3_mimic1']))}"/>
+  <xacro:property name="lower_axis3_mimic2" value="${' '.join(map(str, mechanical_parameters['joint']['axis']['lower_j3_mimic2']))}"/>
+
+  <!-- joint posture  -->
+  <xacro:property name="upper_j1_rpy_x" value="${mechanical_parameters['joint']['rpy']['upper_j1']['x']}"/>
+  <xacro:property name="upper_j1_rpy_y" value="${mechanical_parameters['joint']['rpy']['upper_j1']['y']}"/>
+  <xacro:property name="upper_j1_rpy_z" value="${mechanical_parameters['joint']['rpy']['upper_j1']['z']}"/>
+  <xacro:property name="upper_j2_rpy_x" value="${mechanical_parameters['joint']['rpy']['upper_j2']['x']}"/>
+  <xacro:property name="upper_j2_rpy_y" value="${mechanical_parameters['joint']['rpy']['upper_j2']['y']}"/>
+  <xacro:property name="upper_j2_rpy_z" value="${mechanical_parameters['joint']['rpy']['upper_j2']['z']}"/>
+  <xacro:property name="upper_j3_rpy_x" value="${mechanical_parameters['joint']['rpy']['upper_j3']['x']}"/>
+  <xacro:property name="upper_j3_rpy_y" value="${mechanical_parameters['joint']['rpy']['upper_j3']['y']}"/>
+  <xacro:property name="upper_j3_rpy_z" value="${mechanical_parameters['joint']['rpy']['upper_j3']['z']}"/>
+  <xacro:property name="upper_j4_rpy_x" value="${mechanical_parameters['joint']['rpy']['upper_j4']['x']}"/>
+  <xacro:property name="upper_j4_rpy_y" value="${mechanical_parameters['joint']['rpy']['upper_j4']['y']}"/>
+  <xacro:property name="upper_j4_rpy_z" value="${mechanical_parameters['joint']['rpy']['upper_j4']['z']}"/>
+  <xacro:property name="upper_j3_mimic1_rpy_x" value="${mechanical_parameters['joint']['rpy']['upper_j3_mimic1']['x']}"/>
+  <xacro:property name="upper_j3_mimic1_rpy_y" value="${mechanical_parameters['joint']['rpy']['upper_j3_mimic1']['y']}"/>
+  <xacro:property name="upper_j3_mimic1_rpy_z" value="${mechanical_parameters['joint']['rpy']['upper_j3_mimic1']['z']}"/>
+  <xacro:property name="upper_j3_mimic2_rpy_x" value="${mechanical_parameters['joint']['rpy']['upper_j3_mimic2']['x']}"/>
+  <xacro:property name="upper_j3_mimic2_rpy_y" value="${mechanical_parameters['joint']['rpy']['upper_j3_mimic2']['y']}"/>
+  <xacro:property name="upper_j3_mimic2_rpy_z" value="${mechanical_parameters['joint']['rpy']['upper_j3_mimic2']['z']}"/>
+  <xacro:property name="lower_j1_rpy_x" value="${mechanical_parameters['joint']['rpy']['lower_j1']['x']}"/>
+  <xacro:property name="lower_j1_rpy_y" value="${mechanical_parameters['joint']['rpy']['lower_j1']['y']}"/>
+  <xacro:property name="lower_j1_rpy_z" value="${mechanical_parameters['joint']['rpy']['lower_j1']['z']}"/>
+  <xacro:property name="lower_j2_rpy_x" value="${mechanical_parameters['joint']['rpy']['lower_j2']['x']}"/>
+  <xacro:property name="lower_j2_rpy_y" value="${mechanical_parameters['joint']['rpy']['lower_j2']['y']}"/>
+  <xacro:property name="lower_j2_rpy_z" value="${mechanical_parameters['joint']['rpy']['lower_j2']['z']}"/>
+  <xacro:property name="lower_j3_rpy_x" value="${mechanical_parameters['joint']['rpy']['lower_j3']['x']}"/>
+  <xacro:property name="lower_j3_rpy_y" value="${mechanical_parameters['joint']['rpy']['lower_j3']['y']}"/>
+  <xacro:property name="lower_j3_rpy_z" value="${mechanical_parameters['joint']['rpy']['lower_j3']['z']}"/>
+  <xacro:property name="lower_j4_rpy_x" value="${mechanical_parameters['joint']['rpy']['lower_j4']['x']}"/>
+  <xacro:property name="lower_j4_rpy_y" value="${mechanical_parameters['joint']['rpy']['lower_j4']['y']}"/>
+  <xacro:property name="lower_j4_rpy_z" value="${mechanical_parameters['joint']['rpy']['lower_j4']['z']}"/>
+  <xacro:property name="lower_j3_mimic1_rpy_x" value="${mechanical_parameters['joint']['rpy']['lower_j3_mimic1']['x']}"/>
+  <xacro:property name="lower_j3_mimic1_rpy_y" value="${mechanical_parameters['joint']['rpy']['lower_j3_mimic1']['y']}"/>
+  <xacro:property name="lower_j3_mimic1_rpy_z" value="${mechanical_parameters['joint']['rpy']['lower_j3_mimic1']['z']}"/>
+  <xacro:property name="lower_j3_mimic2_rpy_x" value="${mechanical_parameters['joint']['rpy']['lower_j3_mimic2']['x']}"/>
+  <xacro:property name="lower_j3_mimic2_rpy_y" value="${mechanical_parameters['joint']['rpy']['lower_j3_mimic2']['y']}"/>
+  <xacro:property name="lower_j3_mimic2_rpy_z" value="${mechanical_parameters['joint']['rpy']['lower_j3_mimic2']['z']}"/>
+</robot>

@@ -48,6 +48,7 @@ def generate_launch_description():
                 "rs080n-a001",
                 "bx300l-b001",
                 "bxp135x-a001",
+                "wd003h-f502",
             ],
             description="robot name",
         )
@@ -72,9 +73,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "robot_controller",
-            choices=[
-                "f",
-            ],
+            choices=["f", "f_duaro"],
             default_value="f",
         )
     )
@@ -194,7 +193,7 @@ def generate_launch_description():
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
 
 
-def launch_setup(contest, *args, **kwargs):
+def launch_setup(context, *args, **kwargs):
     prefix = LaunchConfiguration("prefix")
     robot = LaunchConfiguration("robot")
     controller_no = LaunchConfiguration("controller_no")
@@ -212,12 +211,14 @@ def launch_setup(contest, *args, **kwargs):
     update_rate_yaml = LaunchConfiguration("update_rate_yaml")
 
     robot_series = ""
-    if "rs" in str(robot.perform(contest)):
+    if "rs" in str(robot.perform(context)):
         robot_series = "rs"
-    if "bx" in str(robot.perform(contest)):
+    if "bx" in str(robot.perform(context)):
         robot_series = "bx"
-    if "bxp" in str(robot.perform(contest)):
+    if "bxp" in str(robot.perform(context)):
         robot_series = "bxp"
+    if "wd" in str(robot.perform(context)):
+        robot_series = "wd"
 
     # Get URDF via xacro
     robot_description_content = Command(
@@ -305,18 +306,33 @@ def launch_setup(contest, *args, **kwargs):
         ],
     )
 
-    spawn_khi_controller = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["khi_controller", "--controller-manager", "/controller_manager"],
-    )
+    khi_controllers = []
+    if robot_series == "wd":
+        spawn_khi_lower_arm_controller = Node(
+            package="controller_manager",
+            executable="spawner",
+            arguments=["khi_lower_arm_controller", "--controller-manager", "/controller_manager"],
+        )
+        spawn_khi_upper_arm_controller = Node(
+            package="controller_manager",
+            executable="spawner",
+            arguments=["khi_upper_arm_controller", "--controller-manager", "/controller_manager"],
+        )
+        khi_controllers = [spawn_khi_lower_arm_controller, spawn_khi_upper_arm_controller]
+    else:
+        spawn_khi_controller = Node(
+            package="controller_manager",
+            executable="spawner",
+            arguments=["khi_controller", "--controller-manager", "/controller_manager"],
+        )
+        khi_controllers = [spawn_khi_controller]
 
     nodes = [
         controller_manager_node,
         robot_state_publisher_node,
         spawn_joint_state_broadcaster,
         spawn_force_torque_sensor_broadcaster,
-        spawn_khi_controller,
     ]
+    nodes += khi_controllers
 
     return nodes

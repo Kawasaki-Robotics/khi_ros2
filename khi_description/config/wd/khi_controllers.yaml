@@ -1,0 +1,58 @@
+controller_manager:
+  ros__parameters:
+    khi_lower_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    khi_upper_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    lower_arm_joint_group_position_controller:
+      type: position_controllers/JointGroupPositionController
+
+    upper_arm_joint_group_position_controller:
+      type: position_controllers/JointGroupPositionController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+khi_upper_arm_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - upper_joint1
+      - upper_joint2
+      - upper_joint3
+      - upper_joint4
+
+khi_lower_arm_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - lower_joint1
+      - lower_joint2
+      - lower_joint3
+      - lower_joint4
+
+upper_arm_joint_group_position_controller:
+  ros__parameters:
+    joints:
+      - upper_joint1
+      - upper_joint2
+      - upper_joint3
+      - upper_joint4
+
+lower_arm_joint_group_position_controller:
+  ros__parameters:
+    joints:
+      - lower_joint1
+      - lower_joint2
+      - lower_joint3
+      - lower_joint4

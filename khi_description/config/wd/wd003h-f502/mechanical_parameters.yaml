@@ -1,0 +1,334 @@
+link:
+  length:
+    cart:
+      x: 0
+      y: 0
+      z: 0.825
+    l0:
+      x: 0
+      y: 0
+      z: 0.239
+    lower_l1:
+      x: 0
+      y: 0.360
+      z: 0.095
+    lower_l2:
+      x: 0
+      y: 0.290
+      z: 0.020
+    lower_l3:
+      x: 0
+      y: -0.138
+      z: 0.04
+    lower_l3_mimic1:
+      x: 0
+      y: -0.138
+      z: 0.038
+    lower_l3_mimic2:
+      x: 0
+      y: 0.080
+      z: 0.057
+    upper_l1:
+      x: 0
+      y: 0.360
+      z: 0.13
+    upper_l2:
+      x: 0
+      y: 0.290
+      z: -0.015
+    upper_l3:
+      x: 0
+      y: -0.138
+      z: 0.040
+    upper_l3_mimic1:
+      x: 0
+      y: -0.138
+      z: 0.038
+    upper_l3_mimic2:
+      x: 0
+      y: 0.080
+      z: 0.057
+  mass:
+    l0: 176.892
+    lower_l1: 10.675
+    lower_l2: 5.306
+    lower_l3: 2.104
+    lower_l3_mimic1: 1.564
+    lower_l3_mimic2: 1.904
+    lower_l4: 0.001
+    upper_l1: 10.675
+    upper_l2: 5.306
+    upper_l3: 2.104
+    upper_l3_mimic1: 1.564
+    upper_l3_mimic2: 1.904
+    upper_l4: 0.001
+  center_of_mass:
+    l0:
+      x: 0
+      y: 0
+      z: 0
+    lower_l1:
+      x: 0
+      y: 0
+      z: 0
+    lower_l2:
+      x: 0
+      y: 0
+      z: 0
+    lower_l3:
+      x: 0
+      y: 0
+      z: 0
+    lower_l3_mimic1:
+      x: 0
+      y: 0
+      z: 0
+    lower_l3_mimic2:
+      x: 0
+      y: 0
+      z: 0
+    lower_l4:
+      x: 0
+      y: 0
+      z: 0
+    upper_l1:
+      x: 0
+      y: 0
+      z: 0
+    upper_l2:
+      x: 0
+      y: 0
+      z: 0
+    upper_l3:
+      x: 0
+      y: 0
+      z: 0
+    upper_l3_mimic1:
+      x: 0
+      y: 0
+      z: 0
+    upper_l3_mimic2:
+      x: 0
+      y: 0
+      z: 0
+    upper_l4:
+      x: 0
+      y: 0
+      z: 0
+  inertia:
+    l0:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    lower_l1:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    lower_l2:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    lower_l3:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    lower_l3_mimic1:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    lower_l3_mimic2:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    lower_l4:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    upper_l1:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    upper_l2:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    upper_l3:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    upper_l3_mimic1:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    upper_l3_mimic2:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+    upper_l4:
+      ixx: 1.0
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 1.0
+      iyz: 0.0
+      izz: 1.0
+  rpy:
+    lower_l1:
+      x: 0
+      y: 0
+      z: 0
+    lower_l2:
+      x: 0
+      y: 0
+      z: 0
+    lower_l3:
+      x: 90
+      y: 0
+      z: 0
+    lower_l3_mimic1:
+      x: 90
+      y: 0
+      z: 0
+    lower_l3_mimic2:
+      x: 90
+      y: 0
+      z: 0
+    lower_l4:
+      x: 0
+      y: 0
+      z: 0
+    upper_l1:
+      x: 0
+      y: 0
+      z: 0
+    upper_l2:
+      x: 0
+      y: 0
+      z: 0
+    upper_l3:
+      x: 90
+      y: 0
+      z: 0
+    upper_l3_mimic1:
+      x: 90
+      y: 0
+      z: 0
+    upper_l3_mimic2:
+      x: 90
+      y: 0
+      z: 0
+    upper_l4:
+      x: 0
+      y: 0
+      z: 0
+joint:
+  type:
+    lower_j1: "revolute"
+    lower_j2: "revolute"
+    lower_j3: "revolute"
+    lower_j3_mimic1: "continuous"
+    lower_j3_mimic2: "continuous"
+    lower_j4: "revolute"
+    upper_j1: "revolute"
+    upper_j2: "revolute"
+    upper_j3: "revolute"
+    upper_j3_mimic1: "continuous"
+    upper_j3_mimic2: "continuous"
+    upper_j4: "revolute"
+  axis:
+    lower_j1: [0, 0, 1]
+    lower_j2: [0, 0, 1]
+    lower_j3: [0, 0, 1]
+    lower_j3_mimic1: [0, 0, 1]
+    lower_j3_mimic2: [0, 0, 1]
+    lower_j4: [0, 0, 1]
+    upper_j1: [0, 0, 1]
+    upper_j2: [0, 0, 1]
+    upper_j3: [0, 0, -1]
+    upper_j3_mimic1: [0, 0, -1]
+    upper_j3_mimic2: [0, 0, -1]
+    upper_j4: [0, 0, 1]
+  rpy:
+    lower_j1:
+      x: 0
+      y: 0
+      z: 0
+    lower_j2:
+      x: 0
+      y: 0
+      z: 0
+    lower_j3:
+      x: -90
+      y: 0
+      z: 0
+    lower_j3_mimic1:
+      x: 0
+      y: 0
+      z: 0
+    lower_j3_mimic2:
+      x: 0
+      y: 0
+      z: 0
+    lower_j4:
+      x: 90
+      y: 0
+      z: 0
+    upper_j1:
+      x: 0
+      y: 0
+      z: 0
+    upper_j2:
+      x: 0
+      y: 0
+      z: 0
+    upper_j3:
+      x: -90
+      y: 0
+      z: 0
+    upper_j3_mimic1:
+      x: 0
+      y: 0
+      z: 0
+    upper_j3_mimic2:
+      x: 0
+      y: 0
+      z: 0
+    upper_j4:
+      x: 90
+      y: 0
+      z: 0

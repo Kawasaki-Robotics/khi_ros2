@@ -1,0 +1,68 @@
+# joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
+# Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
+# Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
+joint_limits:
+  lower_joint1:
+    has_position_limits: true
+    min_position: -2.967059
+    max_position: 2.967059
+    has_velocity_limits: true
+    max_velocity: 2.775074
+    has_acceleration_limits: true
+    max_acceleration: 2.220059
+  lower_joint2:
+    has_position_limits: true
+    min_position: -2.268928
+    max_position: 2.443460
+    has_velocity_limits: true
+    max_velocity: 4.398230
+    has_acceleration_limits: true
+    max_acceleration: 2.159845
+  lower_joint3:
+    has_position_limits: true
+    min_position: 0.0
+    max_position: 3.021164
+    has_velocity_limits: true
+    max_velocity: 2.897246
+    has_acceleration_limits: true
+    max_acceleration: 4.828744
+  lower_joint4:
+    has_position_limits: true
+    min_position: -6.283185
+    max_position: 6.283185
+    has_velocity_limits: true
+    max_velocity: 8.377580
+    has_acceleration_limits: true
+    max_acceleration: 36.6514
+  upper_joint1:
+    has_position_limits: true
+    min_position: -2.443460
+    max_position: 8.726646
+    has_velocity_limits: true
+    max_velocity: 2.775074
+    has_acceleration_limits: true
+    max_acceleration: 2.220059
+  upper_joint2:
+    has_position_limits: true
+    min_position: -2.443460
+    max_position: 2.268928
+    has_velocity_limits: true
+    max_velocity: 4.398230
+    has_acceleration_limits: true
+    max_acceleration: 2.159845
+  upper_joint3:
+    has_position_limits: true
+    min_position: 0.0
+    max_position: 3.021164
+    has_velocity_limits: true
+    max_velocity: 2.897246
+    has_acceleration_limits: true
+    max_acceleration: 4.828744
+  upper_joint4:
+    has_position_limits: true
+    min_position: -6.283185
+    max_position: 6.283185
+    has_velocity_limits: true
+    max_velocity: 8.377580
+    has_acceleration_limits: true
+    max_acceleration: 36.6514

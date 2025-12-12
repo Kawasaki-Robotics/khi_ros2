@@ -10,6 +10,7 @@ ROS2 distribution `Humble` is supported.
 Controller(F01A/F02A): Higher than ```ASF_01010200E```  
 Controller(F01B/F02B/F60B): Higher than ```ASF_01040200A```  
 Controller(F60A): Higher than ```ASF_010000020```
+Controller(F61): Higher than ```ASF_06000000T```
 
 ### Supported Robot
 
@@ -20,6 +21,7 @@ Controller(F60A): Higher than ```ASF_010000020```
  * RS080N-A001
  * BX300L-B001
  * BXP135X-A001
+ * WD003H-F502 (duAro2)
 
 ## Requirements
 
@@ -87,13 +89,18 @@ Change? (If not, Press RETURN only.)
 
 ### (1) Launch Control Node
 
-Start ```khi_hardware``` as:  
+#### When using a real robot
 ```
 ros2 launch khi_hardware khi_bringup.launch.py robot:=<robot_name> robot_ip:=<robot_ip_address>
 ```
 (e.g.) `ros2 launch khi_hardware khi_bringup.launch.py robot:=rs080n-a001 robot_ip:=192.168.0.3`
 
-When using Gazebo Classic:  
+##### When using duAro2 with a real robot
+```
+ros2 launch khi_hardware khi_bringup.launch.py robot:=wd003h-f502 robot_ip:=<robot_ip_address> robot_controller:=f_duaro
+```
+
+#### When using Gazebo Classic
 ```
 ros2 launch khi_gazebo khi_gazebo.launch.py robot:=<robot_name>
 ```

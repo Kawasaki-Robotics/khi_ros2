@@ -1,0 +1,408 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="khi_joint_link" params="prefix robot_series robot_name">
+
+    <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/get_mechanical_parameters.xacro"/>
+
+    <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/get_joint_limits.xacro"/>
+
+    <xacro:include filename="$(find khi_description)/urdf/material.xacro"/>
+
+    <!-- Fix robot to world -->
+    <link name="world"/>
+    <joint name="${prefix}world2cart" type="fixed">
+      <parent link="world"/>
+      <child link="${prefix}cart"/>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+    <joint name="${prefix}cart2base" type="fixed">
+      <parent link="${prefix}cart"/>
+      <child link="${prefix}base_link"/>
+      <origin xyz="${cart_x} ${cart_y} ${cart_z}" rpy="0 0 0" />
+    </joint>
+
+    <!-- Lower Arm Joint  -->
+    <joint name="${prefix}lower_joint1" type="${lower_jt1_type}">
+      <axis xyz="${lower_axis1}" />
+      <limit effort="1000.0" lower="${lower_jt1_min_position}" upper="${lower_jt1_max_position}" velocity="${lower_jt1_max_velocity}"/>
+      <origin xyz="${l0_x} ${l0_y} ${l0_z}" rpy="${radians(lower_j1_rpy_x)} ${radians(lower_j1_rpy_y)} ${radians(lower_j1_rpy_z)}" />
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}lower_link1"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="${prefix}lower_joint2" type="${lower_jt2_type}">
+      <axis xyz="${lower_axis2}"/>
+      <limit effort="1000.0" lower="${lower_jt2_min_position}" upper="${lower_jt2_max_position}" velocity="${lower_jt2_max_velocity}"/>
+      <origin xyz="${lower_l1_x} ${lower_l1_y} ${lower_l1_z}" rpy="${radians(lower_j2_rpy_x)} ${radians(lower_j2_rpy_y)} ${radians(lower_j2_rpy_z)}" />
+      <parent link="${prefix}lower_link1"/>
+      <child link="${prefix}lower_link2"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="${prefix}lower_joint3" type="${lower_jt3_type}">
+      <axis xyz="${lower_axis3}"/>
+      <limit effort="1000.0" lower="${lower_jt3_min_position}" upper="${lower_jt3_max_position}" velocity="${lower_jt3_max_velocity}"/>
+      <origin xyz="${lower_l2_x} ${lower_l2_y} ${lower_l2_z}" rpy="${radians(lower_j3_rpy_x)} ${radians(lower_j3_rpy_y)} ${radians(lower_j3_rpy_z)}" />
+      <parent link="${prefix}lower_link2"/>
+      <child link="${prefix}lower_link3"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="${prefix}lower_joint3_mimic1" type="${lower_jt3_mimic1_type}">
+      <axis xyz="${lower_axis3_mimic1}"/>
+      <origin xyz="${lower_l3_x} ${lower_l3_y} ${lower_l3_z}" rpy="${radians(lower_j3_mimic1_rpy_x)} ${radians(lower_j3_mimic1_rpy_y)} ${radians(lower_j3_mimic1_rpy_z)}" />
+      <parent link="${prefix}lower_link3"/>
+      <child link="${prefix}lower_link3_mimic1"/>
+      <mimic joint="${prefix}lower_joint3" multiplier="-2" offset="0"/>
+    </joint>
+    <joint name="${prefix}lower_joint3_mimic2" type="${lower_jt3_mimic2_type}">
+      <axis xyz="${lower_axis3_mimic2}"/>
+      <origin xyz="${lower_l3_mimic1_x} ${lower_l3_mimic1_y} ${lower_l3_mimic1_z}" rpy="${radians(lower_j3_mimic2_rpy_x)} ${radians(lower_j3_mimic2_rpy_y)} ${radians(lower_j3_mimic2_rpy_z)}" />
+      <parent link="${prefix}lower_link3_mimic1"/>
+      <child link="${prefix}lower_link3_mimic2"/>
+      <mimic joint="${prefix}lower_joint3" multiplier="1" offset="0"/>
+    </joint>
+    <joint name="${prefix}lower_joint4" type="${lower_jt4_type}">
+      <axis xyz="${lower_axis4}"/>
+      <limit effort="1000.0" lower="${lower_jt4_min_position}" upper="${lower_jt4_max_position}" velocity="${lower_jt4_max_velocity}"/>
+      <origin xyz="${lower_l3_mimic2_x} ${lower_l3_mimic2_y} ${lower_l3_mimic2_z}" rpy="${radians(lower_j4_rpy_x)} ${radians(lower_j4_rpy_y)} ${radians(lower_j4_rpy_z)}" />
+      <parent link="${prefix}lower_link3_mimic2"/>
+      <child link="${prefix}lower_link4"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+
+    <!-- Upper Arm Joint  -->
+    <joint name="${prefix}upper_joint1" type="${upper_jt1_type}">
+      <axis xyz="${upper_axis1}" />
+      <limit effort="1000.0" lower="${upper_jt1_min_position}" upper="${upper_jt1_max_position}" velocity="${upper_jt1_max_velocity}"/>
+      <origin xyz="${l0_x} ${l0_y} ${l0_z}" rpy="${radians(upper_j1_rpy_x)} ${radians(upper_j1_rpy_y)} ${radians(upper_j1_rpy_z)}" />
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}upper_link1"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="${prefix}upper_joint2" type="${upper_jt2_type}">
+      <axis xyz="${upper_axis2}"/>
+      <limit effort="1000.0" lower="${upper_jt2_min_position}" upper="${upper_jt2_max_position}" velocity="${upper_jt2_max_velocity}"/>
+      <origin xyz="${upper_l1_x} ${upper_l1_y} ${upper_l1_z}" rpy="${radians(upper_j2_rpy_x)} ${radians(upper_j2_rpy_y)} ${radians(upper_j2_rpy_z)}" />
+      <parent link="${prefix}upper_link1"/>
+      <child link="${prefix}upper_link2"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="${prefix}upper_joint3" type="${upper_jt3_type}">
+      <axis xyz="${upper_axis3}"/>
+      <limit effort="1000.0" lower="${upper_jt3_min_position}" upper="${upper_jt3_max_position}" velocity="${upper_jt3_max_velocity}"/>
+      <origin xyz="${upper_l2_x} ${upper_l2_y} ${upper_l2_z}" rpy="${radians(upper_j3_rpy_x)} ${radians(upper_j3_rpy_y)} ${radians(upper_j3_rpy_z)}" />
+      <parent link="${prefix}upper_link2"/>
+      <child link="${prefix}upper_link3"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="${prefix}upper_joint3_mimic1" type="${upper_mimic_jt1_type}">
+      <axis xyz="${upper_mimic_axis1}"/>
+      <origin xyz="${upper_l3_x} ${upper_l3_y} ${upper_l3_z}" rpy="${radians(upper_j3_mimic1_rpy_x)} ${radians(upper_j3_mimic1_rpy_y)} ${radians(upper_j3_mimic1_rpy_z)}" />
+      <parent link="${prefix}upper_link3"/>
+      <child link="${prefix}upper_link3_mimic1"/>
+      <mimic joint="${prefix}upper_joint3" multiplier="-2" offset="0"/>
+    </joint>
+    <joint name="${prefix}upper_joint3_mimic2" type="${upper_mimic_jt2_type}">
+      <axis xyz="${upper_mimic_axis2}"/>
+      <origin xyz="${upper_l3_mimic1_x} ${upper_l3_mimic1_y} ${upper_l3_mimic1_z}" rpy="${radians(upper_j3_mimic2_rpy_x)} ${radians(upper_j3_mimic2_rpy_y)} ${radians(upper_j3_mimic2_rpy_z)}" />
+      <parent link="${prefix}upper_link3_mimic1"/>
+      <child link="${prefix}upper_link3_mimic2"/>
+      <mimic joint="${prefix}upper_joint3" multiplier="1" offset="0"/>
+    </joint>
+    <joint name="${prefix}upper_joint4" type="${upper_jt4_type}">
+      <axis xyz="${upper_axis4}"/>
+      <limit effort="1000.0" lower="${upper_jt4_min_position}" upper="${upper_jt4_max_position}" velocity="${upper_jt4_max_velocity}"/>
+      <origin xyz="${upper_l3_mimic2_x} ${upper_l3_mimic2_y} ${upper_l3_mimic2_z}" rpy="${radians(upper_j4_rpy_x)} ${radians(upper_j4_rpy_y)} ${radians(upper_j4_rpy_z)}" />
+      <parent link="${prefix}upper_link3_mimic2"/>
+      <child link="${prefix}upper_link4"/>
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+
+    <!-- Base  -->
+    <link name="${prefix}cart">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/Cart.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/Cart.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+      <inertial>
+        <origin xyz="${link0_mass_x} ${link0_mass_y} ${link0_mass_z}"/>
+        <mass value="${link0_mass}"/>
+        <inertia ixx="${link0_ixx}" ixy="${link0_ixy}" ixz="${link0_ixz}" iyy="${link0_iyy}" iyz="${link0_iyz}" izz="${link0_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}base_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J0.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J0.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+      </collision>
+      <inertial>
+        <origin xyz="${link0_mass_x} ${link0_mass_y} ${link0_mass_z}"/>
+        <mass value="${link0_mass}"/>
+        <inertia ixx="${link0_ixx}" ixy="${link0_ixy}" ixz="${link0_ixz}" iyy="${link0_iyy}" iyz="${link0_iyz}" izz="${link0_izz}"/>
+      </inertial>
+    </link>
+
+    <!-- Lower Arm Link  -->
+    <link name="${prefix}lower_link1">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J1L.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(lower_l1_rpy_x)} ${radians(lower_l1_rpy_y)} ${radians(lower_l1_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J1L.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(lower_l1_rpy_x)} ${radians(lower_l1_rpy_y)} ${radians(lower_l1_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${lower_link1_mass_x} ${lower_link1_mass_y} ${lower_link1_mass_z}"/>
+        <mass value="${lower_link1_mass}"/>
+        <inertia ixx="${lower_link1_ixx}" ixy="${lower_link1_ixy}" ixz="${lower_link1_ixz}" iyy="${lower_link1_iyy}" iyz="${lower_link1_iyz}" izz="${lower_link1_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}lower_link2">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J2L.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(lower_l2_rpy_x)} ${radians(lower_l2_rpy_y)} ${radians(lower_l2_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J2L.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(lower_l2_rpy_x)} ${radians(lower_l2_rpy_y)} ${radians(lower_l2_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${lower_link2_mass_x} ${lower_link2_mass_y} ${lower_link2_mass_z}"/>
+        <mass value="${lower_link2_mass}"/>
+        <inertia ixx="${lower_link2_ixx}" ixy="${lower_link2_ixy}" ixz="${lower_link2_ixz}" iyy="${lower_link2_iyy}" iyz="${lower_link2_iyz}" izz="${lower_link2_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}lower_link3">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3L.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(lower_l3_rpy_x)} ${radians(lower_l3_rpy_y)} ${radians(lower_l3_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3L.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(lower_l3_rpy_x)} ${radians(lower_l3_rpy_y)} ${radians(lower_l3_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${lower_link3_mass_x} ${lower_link3_mass_y} ${lower_link3_mass_z}"/>
+        <mass value="${lower_link3_mass}"/>
+        <inertia ixx="${lower_link3_ixx}" ixy="${lower_link3_ixy}" ixz="${lower_link3_ixz}" iyy="${lower_link3_iyy}" iyz="${lower_link3_iyz}" izz="${lower_link3_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}lower_link3_mimic1">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3L_Mimic1.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(lower_l3_mimic1_rpy_x)} ${radians(lower_l3_mimic1_rpy_y)} ${radians(lower_l3_mimic1_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3L_Mimic1.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(lower_l3_mimic1_rpy_x)} ${radians(lower_l3_mimic1_rpy_y)} ${radians(lower_l3_mimic1_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${lower_link3_mimic1_mass_x} ${lower_link3_mimic1_mass_y} ${lower_link3_mimic1_mass_z}"/>
+        <mass value="${lower_link3_mimic1_mass}"/>
+        <inertia ixx="${lower_link3_mimic1_ixx}" ixy="${lower_link3_mimic1_ixy}" ixz="${lower_link3_mimic1_ixz}" iyy="${lower_link3_mimic1_iyy}" iyz="${lower_link3_mimic1_iyz}" izz="${lower_link3_mimic1_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}lower_link3_mimic2">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3L_Mimic2.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(lower_l3_mimic2_rpy_x)} ${radians(lower_l3_mimic2_rpy_y)} ${radians(lower_l3_mimic2_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3L_Mimic2.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(lower_l3_mimic2_rpy_x)} ${radians(lower_l3_mimic2_rpy_y)} ${radians(lower_l3_mimic2_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${lower_link3_mimic2_mass_x} ${lower_link3_mimic2_mass_y} ${lower_link3_mimic2_mass_z}"/>
+        <mass value="${lower_link3_mimic2_mass}"/>
+        <inertia ixx="${lower_link3_mimic2_ixx}" ixy="${lower_link3_mimic2_ixy}" ixz="${lower_link3_mimic2_ixz}" iyy="${lower_link3_mimic2_iyy}" iyz="${lower_link3_mimic2_iyz}" izz="${lower_link3_mimic2_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}lower_link4">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J4L.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(lower_l4_rpy_x)} ${radians(lower_l4_rpy_y)} ${radians(lower_l4_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J4L.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(lower_l4_rpy_x)} ${radians(lower_l4_rpy_y)} ${radians(lower_l4_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${lower_link4_mass_x} ${lower_link4_mass_y} ${lower_link4_mass_z}"/>
+        <mass value="${lower_link4_mass}"/>
+        <inertia ixx="${lower_link4_ixx}" ixy="${lower_link4_ixy}" ixz="${lower_link4_ixz}" iyy="${lower_link4_iyy}" iyz="${lower_link4_iyz}" izz="${lower_link4_izz}"/>
+      </inertial>
+    </link>
+
+    <!-- Upper Arm Link  -->
+    <link name="${prefix}upper_link1">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J1U.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(upper_l1_rpy_x)} ${radians(upper_l1_rpy_y)} ${radians(upper_l1_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J1U.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(upper_l1_rpy_x)} ${radians(upper_l1_rpy_y)} ${radians(upper_l1_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${upper_link1_mass_x} ${upper_link1_mass_y} ${upper_link1_mass_z}"/>
+        <mass value="${upper_link1_mass}"/>
+        <inertia ixx="${upper_link1_ixx}" ixy="${upper_link1_ixy}" ixz="${upper_link1_ixz}" iyy="${upper_link1_iyy}" iyz="${upper_link1_iyz}" izz="${upper_link1_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}upper_link2">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J2U.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(upper_l2_rpy_x)} ${radians(upper_l2_rpy_y)} ${radians(upper_l2_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J2U.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(upper_l2_rpy_x)} ${radians(upper_l2_rpy_y)} ${radians(upper_l2_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${upper_link2_mass_x} ${upper_link2_mass_y} ${upper_link2_mass_z}"/>
+        <mass value="${upper_link2_mass}"/>
+        <inertia ixx="${upper_link2_ixx}" ixy="${upper_link2_ixy}" ixz="${upper_link2_ixz}" iyy="${upper_link2_iyy}" iyz="${upper_link2_iyz}" izz="${upper_link2_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}upper_link3">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3U.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(upper_l3_rpy_x)} ${radians(upper_l3_rpy_y)} ${radians(upper_l3_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3U.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(upper_l3_rpy_x)} ${radians(upper_l3_rpy_y)} ${radians(upper_l3_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${upper_link3_mass_x} ${upper_link3_mass_y} ${upper_link3_mass_z}"/>
+        <mass value="${upper_link3_mass}"/>
+        <inertia ixx="${upper_link3_ixx}" ixy="${upper_link3_ixy}" ixz="${upper_link3_ixz}" iyy="${upper_link3_iyy}" iyz="${upper_link3_iyz}" izz="${upper_link3_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}upper_link3_mimic1">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3U_Mimic1.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(upper_l3_mimic1_rpy_x)} ${radians(upper_l3_mimic1_rpy_y)} ${radians(upper_l3_mimic1_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3U_Mimic1.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(upper_l3_mimic1_rpy_x)} ${radians(upper_l3_mimic1_rpy_y)} ${radians(upper_l3_mimic1_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${upper_link3_mimic1_mass_x} ${upper_link3_mimic1_mass_y} ${upper_link3_mimic1_mass_z}"/>
+        <mass value="${upper_link3_mimic1_mass}"/>
+        <inertia ixx="${upper_link3_mimic1_ixx}" ixy="${upper_link3_mimic1_ixy}" ixz="${upper_link3_mimic1_ixz}" iyy="${upper_link3_mimic1_iyy}" iyz="${upper_link3_mimic1_iyz}" izz="${upper_link3_mimic1_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}upper_link3_mimic2">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3U_Mimic2.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(upper_l3_mimic2_rpy_x)} ${radians(upper_l3_mimic2_rpy_y)} ${radians(upper_l3_mimic2_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J3U_Mimic2.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(upper_l3_mimic2_rpy_x)} ${radians(upper_l3_mimic2_rpy_y)} ${radians(upper_l3_mimic2_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${upper_link3_mimic2_mass_x} ${upper_link3_mimic2_mass_y} ${upper_link3_mimic2_mass_z}"/>
+        <mass value="${upper_link3_mimic2_mass}"/>
+        <inertia ixx="${upper_link3_mimic2_ixx}" ixy="${upper_link3_mimic2_ixy}" ixz="${upper_link3_mimic2_ixz}" iyy="${upper_link3_mimic2_iyy}" iyz="${upper_link3_mimic2_iyz}" izz="${upper_link3_mimic2_izz}"/>
+      </inertial>
+    </link>
+    <link name="${prefix}upper_link4">
+      <visual>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J4U.stl"/>
+        </geometry>
+        <xacro:white/>
+        <origin xyz="0 0 0" rpy="${radians(upper_l4_rpy_x)} ${radians(upper_l4_rpy_y)} ${radians(upper_l4_rpy_z)}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://khi_description/meshes/${robot_series}/${robot_name}/J4U.stl"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="${radians(upper_l4_rpy_x)} ${radians(upper_l4_rpy_y)} ${radians(upper_l4_rpy_z)}"/>
+      </collision>
+      <inertial>
+        <origin xyz="${upper_link4_mass_x} ${upper_link4_mass_y} ${upper_link4_mass_z}"/>
+        <mass value="${upper_link4_mass}"/>
+        <inertia ixx="${upper_link4_ixx}" ixy="${upper_link4_ixy}" ixz="${upper_link4_ixz}" iyy="${upper_link4_iyy}" iyz="${upper_link4_iyz}" izz="${upper_link4_izz}"/>
+      </inertial>
+    </link>
+  </xacro:macro>
+</robot>

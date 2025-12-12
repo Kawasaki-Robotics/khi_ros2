@@ -1,0 +1,8 @@
+lower_joint1: -135.0
+lower_joint2: 120.0
+lower_joint3: 90.0
+lower_joint4: 15
+upper_joint1: 135.0
+upper_joint2: -120.0
+upper_joint3: 90.0
+upper_joint4: -15

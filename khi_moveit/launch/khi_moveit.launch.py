@@ -64,6 +64,7 @@ def generate_launch_description():
                 "rs080n-a001",
                 "bx300l-b001",
                 "bxp135x-a001",
+                "wd003h-f502",
             ],
             description="robot name",
         )
@@ -147,6 +148,8 @@ def launch_setup(context, *args, **kwargs):
         robot_series = "bx"
     if "bxp" in str(robot.perform(context)):
         robot_series = "bxp"
+    if "wd" in str(robot.perform(context)):
+        robot_series = "wd"
 
     # planning_context
     robot_description_content = Command(
@@ -201,9 +204,12 @@ def launch_setup(context, *args, **kwargs):
         )
     }
 
-    kinematics_yaml = load_yaml("khi_moveit", "config/kinematics.yaml")
-
-    ompl_planning = load_yaml("khi_moveit", "config/ompl_planning.yaml")
+    if robot_series == "wd":
+        kinematics_yaml = load_yaml("khi_moveit", "config/wd/kinematics.yaml")
+        ompl_planning = load_yaml("khi_moveit", "config/wd/ompl_planning.yaml")
+    else:
+        kinematics_yaml = load_yaml("khi_moveit", "config/kinematics.yaml")
+        ompl_planning = load_yaml("khi_moveit", "config/ompl_planning.yaml")
     planning_pipelines = load_yaml("khi_moveit", "config/planning_pipelines.yaml")
     planning_pipelines["ompl"].update(ompl_planning)
 

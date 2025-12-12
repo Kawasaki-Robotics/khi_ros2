@@ -119,7 +119,7 @@ private:
   void handle_krnx_error(
     const std::string & krnx_api, const int krnx_return_code, const int as_err_code,
     const int arm_no) const;
-  void set_periodic_data_config() const;
+  bool set_periodic_data_config() const;
 
   static constexpr int KRNX_MSGSIZE = 1024;
   static constexpr int KRNX_CMD_SIZE = 256;
