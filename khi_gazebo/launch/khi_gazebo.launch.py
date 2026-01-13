@@ -52,6 +52,7 @@ def generate_launch_description():
                 "bx300l-b001",
                 "bxp135x-a001",
                 "wd003h-f502",
+                "bxp210l-a001",
             ],
             description="robot name",
         )
