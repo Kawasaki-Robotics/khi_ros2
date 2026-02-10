@@ -56,13 +56,13 @@ void KhiPublisher::start(const KhiDriver & driver)
 
 void KhiPublisher::report_error(const KhiDriver & driver)
 {
-  // Determine if error repoting should be re-enabled.
-  if (should_stop_error_reporting_ && driver.is_error())
-  {
-    std::vector<int> error_codes;
-    std::vector<std::string> error_msgs;
-    driver.get_error_info(error_codes, error_msgs);
+  std::vector<int> error_codes;
+  std::vector<std::string> error_msgs;
+  driver.get_error_info(error_codes, error_msgs);
 
+  // Determine if error repoting should be re-enabled.
+  if (should_stop_error_reporting_)
+  {
     if (error_codes.size() != old_error_codes_.size())
     {
       should_stop_error_reporting_ = false;
@@ -76,39 +76,29 @@ void KhiPublisher::report_error(const KhiDriver & driver)
           should_stop_error_reporting_ = false;
         }
       }
-    }
+    } 
 
-    if (!should_stop_error_reporting_)
-    {
-      old_error_codes_.resize(0);
-    }
+    old_error_codes_ = error_codes;
   }
 
-  // Determine if error repoting should be re-enabled.
+  // Report error if error reporting is enabled.
   if (!should_stop_error_reporting_)
   {
-    khi_msgs::msg::ErrorInfo error_info;
-    driver.get_error_info(error_info.error_codes, error_info.error_msgs);
-    if (error_info.error_codes.empty())
+    if (!error_codes.empty())
     {
-      return;
+      // Get the current time.
+      khi_msgs::msg::ErrorInfo error_info;
+      rclcpp::Clock ros_clock(RCL_ROS_TIME);
+      const rclcpp::Time now = ros_clock.now();
+      error_info.stamp = now;
+      error_info.error_codes = error_codes;
+      error_info.error_msgs = error_msgs;
+      
+      error_info_publisher_->publish(error_info);
     }
-
-    // Get the current time.
-    rclcpp::Clock ros_clock(RCL_ROS_TIME);
-    const rclcpp::Time now = ros_clock.now();
-    const auto current_time = static_cast<std::time_t>(now.seconds());
-    std::tm time_info{};
-    localtime_r(&current_time, &time_info);
-    std::ostringstream oss;
-    oss << std::put_time(&time_info, "%Y-%m-%d %H:%M:%S");
-    error_info.time = oss.str();
-
-    error_info_publisher_->publish(error_info);
 
     // Prevent repeated Publishing of error information.
     should_stop_error_reporting_ = true;
-    old_error_codes_ = error_info.error_codes;
   }
 }
 
