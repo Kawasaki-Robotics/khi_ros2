@@ -1,4 +1,4 @@
-planning_pipelines: [ompl, pilz, chomp]
+planning_pipelines: [ompl, pilz]
 ompl:
   planning_plugin: ompl_interface/OMPLPlanner
   request_adapters:
