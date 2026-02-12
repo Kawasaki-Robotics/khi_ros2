@@ -18,7 +18,8 @@
     internal_signal
     ft_sensor
     ">
-    <ros2_control name="${robot_name}" type="system">
+    <xacro:property name="safe_robot_name" value="${robot_name.replace('-', '_')}" />
+    <ros2_control name="${safe_robot_name}" type="system">
 
       <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/get_mechanical_parameters.xacro"/>
       <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/get_joint_limits.xacro"/>

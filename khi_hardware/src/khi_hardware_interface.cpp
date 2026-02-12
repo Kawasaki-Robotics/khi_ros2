@@ -251,7 +251,7 @@ hardware_interface::return_type KhiHardwareInterface::write(
   auto deactivate = [&]()
   {
     driver_->deactivate();
-    set_state(rclcpp_lifecycle::State(
+    set_lifecycle_state(rclcpp_lifecycle::State(
       lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE,
       hardware_interface::lifecycle_state_names::INACTIVE));
     return hardware_interface::return_type::OK;
@@ -262,7 +262,7 @@ hardware_interface::return_type KhiHardwareInterface::write(
     return hardware_interface::return_type::OK;
   }
 
-  if (get_state().id() == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE)
+  if (get_lifecycle_state().id() == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE)
   {
     return hardware_interface::return_type::OK;
   }
