@@ -21,6 +21,7 @@ Controller(F61): Higher than ```ASF_06000000T```
  * RS080N-A001
  * BX300L-B001
  * BXP135X-A001
+ * BXP210L-A001
  * WD003H-F502 (duAro2)
 
 ## Requirements
