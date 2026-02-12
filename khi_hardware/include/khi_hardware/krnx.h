@@ -109,11 +109,18 @@ extern "C"
 #define KRNX_E_ASERROR (-0x1020)
 #define KRNX_E_NOROBOT (-0x1021)
 #define KRNX_E_DISABLED (-0x1022)
+#define KRNX_E_CMDSEND_NOTSUPPORTED (-0x1024)
+#define KRNX_E_CMDPOS_OUT_OF_RANGE (-0x1025)
+#define KRNX_E_CANNOT_SEND_CMDPOS (-0x1026)
 
 #define KRNX_E_CANTMOVECONFIG (-0x1030)
 #define KRNX_E_JT5NOT0DEG (-0x1031)
 #define KRNX_E_ILLCONFIG (-0x1032)
 #define KRNX_E_CANNOTLOAD_MOTORON (-0x1033)
+#define KRNX_E_PROGRAM_RUNNING (-0x1034)
+#define KRNX_E_HOLD_FAIL (-0x1035)
+#define KRNX_E_MOTOR_ON_FAIL (-0x1036)
+#define KRNX_E_MOTOR_OFF_FAIL (-0x1037)
 
 #define KRNX_E_OPEN_NETWORK (-0x1100)
 #define KRNX_E_OPEN_CONNECTED_PROCESS (-0x1101)
@@ -183,11 +190,12 @@ extern "C"
 
 /* RT Ctrl Data Kind */
 #define KRNX_CYC_KRNX2AS_KIND_ANGLE_RELATIVE \
-  (0x0001) /* Joint positions(relative value) [rad or mm] */
+  (0x0001) /* Position command value (correction value) [rad or mm] */
 #define KRNX_CYC_KRNX2AS_KIND_SIG_EXTERNAL_OUTPUT (0x0002) /* External output signals */
 #define KRNX_CYC_KRNX2AS_KIND_SIG_EXTERNAL_INPUT (0x0004)  /* External input signals */
 #define KRNX_CYC_KRNX2AS_KIND_SIG_INTERNAL (0x0008)        /* Internal signals */
-#define KRNX_CYC_KRNX2AS_KIND_SIZE (4)                     /* Number of types */
+#define KRNX_CYC_KRNX2AS_KIND_ANGLE (0x0010)               /* Position command value [rad or mm] */
+#define KRNX_CYC_KRNX2AS_KIND_SIZE (5)                     /* Number of types */
 #define KRNX_CYC_KRNX2AS_KIND_LEGACY (KRNX_CYC_KRNX2AS_KIND_ANGLE_RELATIVE)
 #define KRNX_CYC_KRNX2AS_KIND_SUPPORTED ((1 << KRNX_CYC_KRNX2AS_KIND_SIZE) - 1)
 
@@ -386,6 +394,11 @@ extern "C"
     char reserved[64];
   } TKrnxOpenErrorInfo;
 
+  typedef struct TKrnxJoint
+  {
+    float angle[KRNX_MAXAXES];
+  } TKrnxJoint;
+
   // Measures for C# (PC-AS)
   // Default arguments cannot be used in C#
   // Provide a separate API if necessary
@@ -418,7 +431,8 @@ extern "C"
 #define QUAL_IFP 0x0200
 #define QUAL_ELOG 0x0400 /* Special data */
 #define QUAL_FLT 0x0800
-#define QUAL_CCS 0x1000 /* FX04783 a */
+#define QUAL_CCS 0x1000
+#define QUAL_STG 0x2000
 
 #ifdef __cplusplus
   DECLSPEC_IMPORT int WINAPI krnx_Abort(int cont_no, int robot_no, int * as_err_code = NULL);
@@ -541,6 +555,12 @@ krnx_LoadEx(int cont_no, const char * filename, FLoadCallBack cbfp, void * cb_pa
 
   DECLSPEC_IMPORT int WINAPI krnx_SetAuxApiTimeoutPeriod(int cont_no, int period);
   DECLSPEC_IMPORT int WINAPI krnx_SetATISoftwareBias(int cont_no, int * as_err_code = NULL);
+  DECLSPEC_IMPORT int WINAPI
+  krnx_HoldWithStopWait(int cont_no, int robot_no, int * as_err_code = NULL);
+  DECLSPEC_IMPORT int WINAPI
+  krnx_PowerOnMotorWithOnWait(int cont_no, int robot_no, int * as_err_code = NULL);
+  DECLSPEC_IMPORT int WINAPI
+  krnx_PowerOffMotorWithOffWait(int cont_no, int robot_no, int * as_err_code = NULL);
 
   /**************************
    *        AS-API          *
@@ -697,7 +717,9 @@ krnx_LoadEx(int cont_no, const char * filename, FLoadCallBack cbfp, void * cb_pa
     short enverr_warm;      /* Deviation abnormal state [axis bit] */
     short system_emergency; /* Emergency stop state due to safety software, controller, TP, etc. */
     short protective_stop;  /* Protective stop state */
-    char reserved[6];
+    short can_send_cmd_pos; /* -1: The robot controller can send the commanded position to the
+                               servo; 0: Cannot */
+    char reserved[4];
   } TKrnxCurRobotStatus;
 
   typedef struct
@@ -747,6 +769,8 @@ krnx_LoadEx(int cont_no, const char * filename, FLoadCallBack cbfp, void * cb_pa
   DECLSPEC_IMPORT int WINAPI krnx_GetRtcBufferLength(int cont_no, int robot_no);
   DECLSPEC_IMPORT int WINAPI krnx_GetSequenceNo(int cont_no, unsigned short * seq_no);
   DECLSPEC_IMPORT void WINAPI krnx_timer_callback(void);
+  DECLSPEC_IMPORT int WINAPI
+  krnx_PrimeCommandPosition(int cont_no, int robot_no, const TKrnxJoint * cmd_pos);
 
   DECLSPEC_IMPORT int WINAPI krnx_RtcInit(int cont_no);
 
