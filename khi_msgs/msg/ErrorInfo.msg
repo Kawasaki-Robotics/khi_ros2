@@ -1,6 +1,9 @@
 # Example
 #   >ros2 topic echo /khi_controller0/khi_publisher/error_info
 #   time: '2024-06-26 18:13:49'
+#   stamp:
+#     sec: 1621886400 # seconds since epoch
+#     nanosec: 500000000 # nanoseconds into the second
 #   error_codes:
 #   - -31135
 #   - -21080
@@ -12,6 +15,8 @@
 
 # The date and time of the error occurence (year-month-day hour:minute:second) will be stored.
 string time
+
+builtin_interfaces/Time stamp
 
 # -1xxxx : Operation Error
 # -2xxxx : Mechanical/Control Warning
