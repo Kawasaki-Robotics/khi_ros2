@@ -631,17 +631,16 @@ bool KhiKrnxDriver::hold(const bool need_log) const
   for (int arm_no = 0; arm_no < static_cast<int>(robot_.arms.size()); arm_no++)
   {
     int error_code = 0;
-    const int return_code = krnx_Hold(robot_.controller_no, arm_no, &error_code);
+    const int return_code = krnx_HoldWithStopWait(robot_.controller_no, arm_no, &error_code);
     if (return_code != KRNX_NOERROR)
     {
       if (need_log)
       {
-        handle_krnx_error("krnx_Hold", return_code, error_code, arm_no);
+        handle_krnx_error("krnx_HoldWithStopWait", return_code, error_code, arm_no);
       }
       return false;
     }
   }
-  rclcpp::sleep_for(std::chrono::seconds(1));
 
   return true;
 }
@@ -743,34 +742,8 @@ bool KhiKrnxDriver::power_on_motor() const
 {
   // Motor Power ON
   int error_code = 0;
-  char msg_buf[KRNX_MSGSIZE];
-  if (!exec_monitor_command(
-        robot_.controller_no, "ZPOW ON", msg_buf, sizeof(msg_buf), &error_code, true))
-  {
-    RCLCPP_ERROR(rclcpp::get_logger("khi_hardware"), "Cannot turn on motor power.");
-    return false;
-  }
-
-  // Wait until motor_lamp turns ON
-  const int timeout_msec = 3000;
-  const int max_cnt = timeout_msec / robot_.period;
-  bool is_motor_lamp_on = false;
-  for (int cnt = 0; cnt < max_cnt; cnt++)
-  {
-    int motor_lamp = OFF;
-    if (!get_motor_lamp(motor_lamp, 0, true))
-    {
-      return false;
-    }
-    if (motor_lamp == ON)
-    {
-      is_motor_lamp_on = true;
-      break;
-    }
-    rclcpp::sleep_for(std::chrono::milliseconds(static_cast<uint32_t>(robot_.period)));
-  }
-
-  if (!is_motor_lamp_on)
+  const int return_code = krnx_PowerOnMotorWithOnWait(robot_.controller_no, 0, &error_code);
+  if (return_code != KRNX_NOERROR)
   {
     RCLCPP_ERROR(rclcpp::get_logger("khi_hardware"), "Cannot turn on motor power.");
     return false;
@@ -789,9 +762,8 @@ bool KhiKrnxDriver::power_off_motor(const bool need_log) const
 {
   // Motor Power ON
   int error_code = 0;
-  char msg_buf[KRNX_MSGSIZE];
-  if (!exec_monitor_command(
-        robot_.controller_no, "ZPOW OFF", msg_buf, sizeof(msg_buf), &error_code, need_log))
+  const int return_code = krnx_PowerOffMotorWithOffWait(robot_.controller_no, 0, &error_code);
+  if (return_code != KRNX_NOERROR)
   {
     if (need_log)
     {
@@ -800,33 +772,6 @@ bool KhiKrnxDriver::power_off_motor(const bool need_log) const
     return false;
   }
 
-  // Wait until motor_lamp turns OFF
-  const int timeout_msec = 3000;
-  const int max_cnt = timeout_msec / robot_.period;
-  bool is_motor_lamp_off = false;
-  for (int cnt = 0; cnt < max_cnt; cnt++)
-  {
-    int motor_lamp = ON;
-    if (!get_motor_lamp(motor_lamp, 0, need_log))
-    {
-      return false;
-    }
-    if (motor_lamp == OFF)
-    {
-      is_motor_lamp_off = true;
-      break;
-    }
-    rclcpp::sleep_for(std::chrono::milliseconds(static_cast<uint32_t>(robot_.period)));
-  }
-
-  if (!is_motor_lamp_off)
-  {
-    if (need_log)
-    {
-      RCLCPP_ERROR(rclcpp::get_logger("khi_hardware"), "Cannot turn off motor power.");
-    }
-    return false;
-  }
   return true;
 }
 
