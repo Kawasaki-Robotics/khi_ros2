@@ -20,6 +20,7 @@
 #include <vector>
 
 #include "hardware_interface/system_interface.hpp"
+#include "hardware_interface/types/hardware_component_interface_params.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "khi_hardware/khi_driver.hpp"
 #include "khi_hardware/khi_robot.hpp"
@@ -42,7 +43,7 @@ public:
 
   KHI_ROBOT_HARDWARE_PUBLIC
   hardware_interface::CallbackReturn on_init(
-    const hardware_interface::HardwareInfo & info) override;
+    const hardware_interface::HardwareComponentInterfaceParams & params) override;
 
   KHI_ROBOT_HARDWARE_PUBLIC
   hardware_interface::CallbackReturn on_configure(

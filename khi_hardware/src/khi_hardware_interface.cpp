@@ -28,18 +28,18 @@ namespace khi_hardware
 KhiHardwareInterface::~KhiHardwareInterface() { driver_->error(); }
 
 hardware_interface::CallbackReturn KhiHardwareInterface::on_init(
-  const hardware_interface::HardwareInfo & hardware_info)
+  const hardware_interface::HardwareComponentInterfaceParams & params)
 {
   RCLCPP_INFO(rclcpp::get_logger("khi_hardware"), "on_init");
   if (
-    hardware_interface::SystemInterface::on_init(hardware_info) !=
+    hardware_interface::SystemInterface::on_init(params) !=
     hardware_interface::CallbackReturn::SUCCESS)
   {
     return hardware_interface::CallbackReturn::ERROR;
   }
 
   // Initialize
-  info_ = hardware_info;
+  info_ = params.hardware_info;
   is_cleaning_up_ = false;
   is_deactivating_ = false;
   is_shutdowning_ = false;
