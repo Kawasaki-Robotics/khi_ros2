@@ -1,0 +1,15 @@
+lower_arm:
+  planner_configs:
+    - RRTConnectkConfigDefault
+  projection_evaluator: joints(lower_joint1,lower_joint2)
+upper_arm:
+  planner_configs:
+    - RRTConnectkConfigDefault
+  projection_evaluator: joints(upper_joint1,upper_joint2)
+botharms:
+  planner_configs:
+    - RRTConnectkConfigDefault
+  projection_evaluator: joints(lower_joint1,upper_joint1)
+RRTConnectkConfigDefault:
+  type: geometric::RRTConnect
+  range: 0.0
