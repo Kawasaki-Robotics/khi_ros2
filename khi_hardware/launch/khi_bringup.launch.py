@@ -294,6 +294,8 @@ def launch_setup(context, *args, **kwargs):
             "joint_state_broadcaster",
             "--controller-manager",
             "/controller_manager",
+            "--service-call-timeout",
+            "10",
         ],
     )
 
@@ -304,6 +306,8 @@ def launch_setup(context, *args, **kwargs):
             "force_torque_sensor_broadcaster",
             "--controller-manager",
             "/controller_manager",
+            "--service-call-timeout",
+            "10",
         ],
     )
 
@@ -312,19 +316,37 @@ def launch_setup(context, *args, **kwargs):
         spawn_khi_lower_arm_controller = Node(
             package="controller_manager",
             executable="spawner",
-            arguments=["khi_lower_arm_controller", "--controller-manager", "/controller_manager"],
+            arguments=[
+                "khi_lower_arm_controller",
+                "--controller-manager",
+                "/controller_manager",
+                "--service-call-timeout",
+                "10",
+            ],
         )
         spawn_khi_upper_arm_controller = Node(
             package="controller_manager",
             executable="spawner",
-            arguments=["khi_upper_arm_controller", "--controller-manager", "/controller_manager"],
+            arguments=[
+                "khi_upper_arm_controller",
+                "--controller-manager",
+                "/controller_manager",
+                "--service-call-timeout",
+                "10",
+            ],
         )
         khi_controllers = [spawn_khi_lower_arm_controller, spawn_khi_upper_arm_controller]
     else:
         spawn_khi_controller = Node(
             package="controller_manager",
             executable="spawner",
-            arguments=["khi_controller", "--controller-manager", "/controller_manager"],
+            arguments=[
+                "khi_controller",
+                "--controller-manager",
+                "/controller_manager",
+                "--service-call-timeout",
+                "10",
+            ],
         )
         khi_controllers = [spawn_khi_controller]
 

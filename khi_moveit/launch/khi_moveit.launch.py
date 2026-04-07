@@ -206,10 +206,10 @@ def launch_setup(context, *args, **kwargs):
     }
 
     if robot_series == "wd":
-        kinematics_yaml = load_yaml("khi_moveit", "config/wd/kinematics.yaml")
+        kinematics_yaml = {"robot_description_kinematics": load_yaml("khi_moveit", "config/wd/kinematics.yaml")}
         ompl_planning = load_yaml("khi_moveit", "config/wd/ompl_planning.yaml")
     else:
-        kinematics_yaml = load_yaml("khi_moveit", "config/kinematics.yaml")
+        kinematics_yaml = {"robot_description_kinematics": load_yaml("khi_moveit", "config/kinematics.yaml")}
         ompl_planning = load_yaml("khi_moveit", "config/ompl_planning.yaml")
     planning_pipelines = load_yaml("khi_moveit", "config/planning_pipelines.yaml")
     planning_pipelines["ompl"].update(ompl_planning)
@@ -278,6 +278,7 @@ def launch_setup(context, *args, **kwargs):
             {"default_planning_pipeline": planner},
         ],
         condition=IfCondition(use_rviz),
+        additional_env={"DBUS_SESSION_BUS_ADDRESS": "/dev/null"},
     )
 
     # Static TF
@@ -286,7 +287,7 @@ def launch_setup(context, *args, **kwargs):
         executable="static_transform_publisher",
         name="static_transform_publisher",
         output="log",
-        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
+        arguments=["--x", "0.0", "--y", "0.0", "--z", "0.0", "--roll", "0.0", "--pitch", "0.0", "--yaw", "0.0", "--frame-id", "world", "--child-frame-id", "base_link"],
     )
 
     nodes = [

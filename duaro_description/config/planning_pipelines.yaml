@@ -1,0 +1,12 @@
+ompl:
+  planning_plugins:
+    - omni_planning_interface/OMPLPlanner
+  request_adapters:
+    - default_planning_request_adapters/ResolveConstraintFrames
+    - default_planning_request_adapters/ValidateWorkspaceBounds
+    - default_planning_request_adapters/CheckStartStateBounds
+    - default_planning_request_adapters/CheckStartStateCollision
+  response_adapters:
+    - default_planning_request_adapters/AddTimeOptimalParameterization
+    - default_planning_request_adapters/ValidateSolution
+    - default_planning_request_adapters/DisplayMotionPath
