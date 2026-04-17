@@ -197,6 +197,7 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_activate(
   }
 
   RCLCPP_INFO(rclcpp::get_logger("khi_hardware"), "Activation successful");
+  write_enabled_ = true;
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -204,6 +205,7 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_deactivate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
   is_deactivating_ = true;
+  write_enabled_ = false;
   RCLCPP_INFO(rclcpp::get_logger("khi_hardware"), "on_deactive");
   auto result = driver_->deactivate();
   if (result == KhiResultCode::FAILURE)
@@ -250,6 +252,7 @@ hardware_interface::return_type KhiHardwareInterface::write(
 {
   auto deactivate = [&]()
   {
+    write_enabled_ = false;
     driver_->deactivate();
     set_state(rclcpp_lifecycle::State(
       lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE,
@@ -257,12 +260,7 @@ hardware_interface::return_type KhiHardwareInterface::write(
     return hardware_interface::return_type::OK;
   };
 
-  if (is_cleaning_up_ || is_deactivating_ || is_shutdowning_)
-  {
-    return hardware_interface::return_type::OK;
-  }
-
-  if (get_state().id() == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE)
+  if (!write_enabled_)
   {
     return hardware_interface::return_type::OK;
   }
@@ -297,6 +295,7 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_cleanup(
   RCLCPP_INFO(rclcpp::get_logger("khi_hardware"), "on_cleanup");
 
   is_cleaning_up_ = true;
+  write_enabled_ = false;
   service_.reset();
   publisher_.reset();
 
@@ -321,6 +320,7 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_shutdown(
   RCLCPP_INFO(rclcpp::get_logger("khi_hardware"), "on_shutdown");
 
   is_shutdowning_ = true;
+  write_enabled_ = false;
   service_.reset();
   publisher_.reset();
 
@@ -342,6 +342,7 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_error(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
   RCLCPP_INFO(rclcpp::get_logger("khi_hardware"), "on_error");
+  write_enabled_ = false;
 
   service_.reset();
   publisher_.reset();
