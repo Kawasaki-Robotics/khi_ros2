@@ -15,7 +15,9 @@
 #ifndef KHI_HARDWARE__KHI_PUBLISHER_HPP_
 #define KHI_HARDWARE__KHI_PUBLISHER_HPP_
 
+#include <atomic>
 #include <memory>
+#include <thread>
 #include <vector>
 
 #include "khi_msgs/msg/actual_current.hpp"
@@ -31,24 +33,29 @@ class KhiPublisher
 public:
   KhiPublisher() = default;
   ~KhiPublisher();
+  void init(const KhiDriver & driver);
   void start(const KhiDriver & driver);
+  void stop();
 
 private:
+  void start_executor();
+  void stop_executor();
   void report_error(const KhiDriver & driver);
   void report_actual_current(const KhiDriver & driver);
   void publish_on_event(const KhiDriver & driver);
-  void publish_on_schedule(const KhiDriver & driver);
 
   static constexpr int MAX_FAULTS = 10;
   static constexpr int EVENT_CHECK_CYCLE = 10000;  // [microsecond]
 
   bool should_stop_error_reporting_ = false;
-  bool should_stop_publisher_ = false;
+  std::atomic<bool> should_stop_publisher_{false};
+  std::atomic<bool> exit_{false};
   std::vector<int> old_error_codes_{};
   std::thread event_thread_;
-  std::thread schedule_thread_;
+  std::thread executor_spin_thread_;
 
   std::shared_ptr<rclcpp::Node> node_;
+  std::shared_ptr<rclcpp::executors::SingleThreadedExecutor> executor_;
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Publisher<khi_msgs::msg::ErrorInfo>::SharedPtr error_info_publisher_{};
   rclcpp::Publisher<khi_msgs::msg::ActualCurrent>::SharedPtr actual_current_publisher_{};

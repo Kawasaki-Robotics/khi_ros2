@@ -15,7 +15,9 @@
 #ifndef KHI_HARDWARE__KHI_SERVICE_HPP_
 #define KHI_HARDWARE__KHI_SERVICE_HPP_
 
+#include <atomic>
 #include <memory>
+#include <thread>
 
 #include "khi_msgs/srv/change_ft_output_mode.hpp"
 #include "khi_msgs/srv/exec_khi_command.hpp"
@@ -35,13 +37,15 @@ class KhiService
 public:
   KhiService() = default;
   ~KhiService();
+  void init(const KhiDriver & driver);
   void start(KhiDriver & driver);
+  void stop();
 
 private:
-  void service_loop(KhiDriver & driver);
-  bool should_stop_service_ = false;
-
+  std::atomic<bool> exit_{false};
   std::shared_ptr<rclcpp::Node> node_;
+  std::shared_ptr<rclcpp::executors::SingleThreadedExecutor> executor_;
+  std::thread spin_thread_;
   rclcpp::Service<khi_msgs::srv::GetSignal>::SharedPtr get_signal_service_{};
   rclcpp::Service<khi_msgs::srv::SetSignal>::SharedPtr set_signal_service_{};
   rclcpp::Service<khi_msgs::srv::ExecKhiCommand>::SharedPtr khi_cmd_service_{};

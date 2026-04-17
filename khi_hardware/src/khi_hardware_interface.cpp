@@ -106,6 +106,11 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_init(
     return hardware_interface::CallbackReturn::ERROR;
   }
 
+  service_ = std::make_shared<KhiService>();
+  publisher_ = std::make_shared<KhiPublisher>();
+  service_->init(*driver_);
+  publisher_->init(*driver_);
+
   RCLCPP_INFO(rclcpp::get_logger("khi_hardware"), "initialize success");
   return hardware_interface::CallbackReturn::SUCCESS;
 }
@@ -124,8 +129,6 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_configure(
     return hardware_interface::CallbackReturn::ERROR;
   }
 
-  service_ = std::make_shared<KhiService>();
-  publisher_ = std::make_shared<KhiPublisher>();
   service_->start(*driver_);
   publisher_->start(*driver_);
 
@@ -296,8 +299,14 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_cleanup(
 
   is_cleaning_up_ = true;
   write_enabled_ = false;
-  service_.reset();
-  publisher_.reset();
+  if (service_)
+  {
+    service_->stop();
+  }
+  if (publisher_)
+  {
+    publisher_->stop();
+  }
 
   auto result = driver_->cleanup();
   is_cleaning_up_ = false;
@@ -321,8 +330,16 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_shutdown(
 
   is_shutdowning_ = true;
   write_enabled_ = false;
-  service_.reset();
-  publisher_.reset();
+  if (service_)
+  {
+    service_->stop();
+    service_.reset();
+  }
+  if (publisher_)
+  {
+    publisher_->stop();
+    publisher_.reset();
+  }
 
   auto result = driver_->shutdown();
   is_shutdowning_ = false;
@@ -344,8 +361,14 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_error(
   RCLCPP_INFO(rclcpp::get_logger("khi_hardware"), "on_error");
   write_enabled_ = false;
 
-  service_.reset();
-  publisher_.reset();
+  if (service_)
+  {
+    service_->stop();
+  }
+  if (publisher_)
+  {
+    publisher_->stop();
+  }
 
   auto result = driver_->error();
   if (result == KhiResultCode::FAILURE)
