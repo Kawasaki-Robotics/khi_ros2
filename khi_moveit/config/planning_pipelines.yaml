@@ -1,5 +1,6 @@
 planning_pipelines: [ompl, pilz]
 ompl:
+  fix_start_state: true
   planning_plugin: ompl_interface/OMPLPlanner
   request_adapters:
     default_planner_request_adapters/AddTimeOptimalParameterization
@@ -10,6 +11,7 @@ ompl:
     default_planner_request_adapters/FixStartStatePathConstraints
   start_state_max_bounds_error: 0.1
 pilz:
+  fix_start_state: true
   planning_plugin: pilz_industrial_motion_planner/CommandPlanner
   request_adapters: ""
   default_planner_config: PTP
