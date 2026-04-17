@@ -6,6 +6,7 @@
     robot_name
     simulation
     use_gazebo
+    use_gz
     robot_ip
     robot_controller
     controller_no
@@ -18,7 +19,8 @@
     internal_signal
     ft_sensor
     ">
-    <ros2_control name="${robot_name}" type="system">
+    <xacro:property name="safe_robot_name" value="${robot_name.replace('-', '_')}" />
+    <ros2_control name="${safe_robot_name}" type="system">
 
       <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/get_mechanical_parameters.xacro"/>
 
@@ -35,7 +37,10 @@
         <xacro:if value="${use_gazebo}">
           <plugin>gazebo_ros2_control/GazeboSystem</plugin>
         </xacro:if>
-        <xacro:unless value="${use_gazebo}">
+        <xacro:if value="${use_gz}">
+          <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </xacro:if>
+        <xacro:unless value="${use_gazebo or use_gz}">
           <plugin>khi_hardware/KhiHardwareInterface</plugin>
           <param name="robot_name">$(arg robot_name)</param>
           <param name="robot_ip">$(arg robot_ip)</param>
@@ -165,7 +170,7 @@
         <param name="arm">arm2</param>
       </joint>
 
-      <xacro:if value="${use_gazebo}">
+      <xacro:if value="${use_gazebo or use_gz}">
         <joint name="${prefix}lower_joint3_mimic1">
           <param name="type"> ${lower_jt3_mimic1_type} </param>
           <param name="arm">arm1</param>

@@ -42,6 +42,7 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_init(
   info_ = hardware_info;
   is_cleaning_up_ = false;
   is_deactivating_ = false;
+  is_handling_error_ = false;
   is_shutdowning_ = false;
 
   // Check
@@ -235,6 +236,10 @@ hardware_interface::return_type KhiHardwareInterface::read(
 
   if (!driver_->is_communicating())
   {
+    if (is_handling_error_)
+    {
+      return hardware_interface::return_type::OK;
+    }
     RCLCPP_ERROR(
       rclcpp::get_logger("khi_hardware"), "Communication with the robot controller has been lost.");
     return hardware_interface::return_type::ERROR;
@@ -253,16 +258,6 @@ hardware_interface::return_type KhiHardwareInterface::read(
 hardware_interface::return_type KhiHardwareInterface::write(
   const rclcpp::Time & /* time */, const rclcpp::Duration & /* duration */)
 {
-  auto deactivate = [&]()
-  {
-    write_enabled_ = false;
-    driver_->deactivate();
-    set_state(rclcpp_lifecycle::State(
-      lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE,
-      hardware_interface::lifecycle_state_names::INACTIVE));
-    return hardware_interface::return_type::OK;
-  };
-
   if (!write_enabled_)
   {
     return hardware_interface::return_type::OK;
@@ -277,16 +272,14 @@ hardware_interface::return_type KhiHardwareInterface::write(
 
   if (!driver_->is_writable())
   {
-    deactivate();
     RCLCPP_INFO(rclcpp::get_logger("khi_hardware"), "deactivate");
-    return hardware_interface::return_type::OK;
+    return hardware_interface::return_type::DEACTIVATE;
   }
 
   if (!driver_->write())
   {
     RCLCPP_ERROR(rclcpp::get_logger("khi_hardware"), "write err");
-    deactivate();
-    return hardware_interface::return_type::OK;
+    return hardware_interface::return_type::DEACTIVATE;
   }
 
   return hardware_interface::return_type::OK;
@@ -359,6 +352,7 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_error(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
   RCLCPP_INFO(rclcpp::get_logger("khi_hardware"), "on_error");
+  is_handling_error_ = true;
   write_enabled_ = false;
 
   if (service_)
@@ -371,6 +365,7 @@ hardware_interface::CallbackReturn KhiHardwareInterface::on_error(
   }
 
   auto result = driver_->error();
+  is_handling_error_ = false;
   if (result == KhiResultCode::FAILURE)
   {
     return hardware_interface::CallbackReturn::FAILURE;

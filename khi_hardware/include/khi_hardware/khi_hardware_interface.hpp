@@ -22,16 +22,15 @@
 #include "hardware_interface/system_interface.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "khi_hardware/khi_driver.hpp"
+#include "khi_hardware/khi_publisher.hpp"
 #include "khi_hardware/khi_robot.hpp"
+#include "khi_hardware/khi_service.hpp"
 #include "khi_hardware/visibility_control.h"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
 namespace khi_hardware
 {
-class KhiPublisher;
-class KhiService;
-
 class KhiHardwareInterface : public hardware_interface::SystemInterface
 {
 public:
@@ -91,6 +90,7 @@ private:
 
   bool is_cleaning_up_ = false;
   bool is_deactivating_ = false;
+  bool is_handling_error_ = false;
   bool is_shutdowning_ = false;
   bool write_enabled_ = false;
   std::shared_ptr<KhiDriver> driver_;

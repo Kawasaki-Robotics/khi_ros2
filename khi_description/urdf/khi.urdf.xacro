@@ -5,6 +5,7 @@
   <xacro:arg name="robot_series" default="rs" />
   <xacro:arg name="simulation" default="false" />
   <xacro:arg name="use_gazebo" default="false" />
+  <xacro:arg name="use_gz" default="false" />
   <xacro:arg name="robot_ip" default="" />
   <xacro:arg name="robot_controller" default="f" />
   <xacro:arg name="controller_no" default="0" />
@@ -20,6 +21,7 @@
   <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/khi_joint_link.xacro"/>
   <xacro:include filename="$(find khi_description)/urdf/$(arg robot_series)/khi.ros2_control.xacro"/>
   <xacro:include filename="$(find khi_description)/urdf/khi.gazebo.xacro"/>
+  <xacro:include filename="$(find khi_description)/urdf/khi.gz.xacro"/>
 
   <!-- instantiate robot -->
   <xacro:khi_joint_link prefix="$(arg prefix)" robot_series="$(arg robot_series)" robot_name="$(arg robot_name)"/>
@@ -30,6 +32,7 @@
     robot_name="$(arg robot_name)"
     simulation="$(arg simulation)"
     use_gazebo="$(arg use_gazebo)"
+    use_gz="$(arg use_gz)"
     robot_ip="$(arg robot_ip)"
     robot_controller="$(arg robot_controller)"
     controller_no="$(arg controller_no)"
@@ -45,5 +48,8 @@
 
   <xacro:if value="$(arg use_gazebo)">
     <xacro:khi_gazebo robot_series="$(arg robot_series)" robot_controller="$(arg robot_controller)"/>
+  </xacro:if>
+  <xacro:if value="$(arg use_gz)">
+    <xacro:khi_gz robot_series="$(arg robot_series)" robot_controller="$(arg robot_controller)"/>
   </xacro:if>
 </robot>

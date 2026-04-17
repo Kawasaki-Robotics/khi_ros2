@@ -2,7 +2,7 @@ KHI ROS2 Driver
 ===================================================================================================================================================
 
 This repository provides ROS2 support for KHI robots.  
-ROS2 distribution `Humble` is supported.
+This branch supports ROS2 distribution `Jazzy`.
 
 ## Supported system
 
@@ -29,7 +29,7 @@ Controller(F61): Higher than ```ASF_06000000T```
 ### Execution Environment
 Make sure that the Ubuntu PC used for real-time control satisfies the following conditions.
 
-* The PC is using realtime kernel for Ubuntu 22.04.
+* The PC is using realtime kernel for Ubuntu 24.04.
 * The user has real-time permissions.
   * (e.g.)Making a real-time group named `realtime`
     1. Make a group and add a user
@@ -53,7 +53,7 @@ If real-time support is not properly configured, a warning saying 'Could not ena
 ## Packages in the Repository
 
 - `khi_description` Contains configuration files for each KHI robot.
-- `khi_gazebo` Contains configuration and launch files for simulating KHI robots in Gazebo Classic.
+- `khi_gz` Contains configuration and launch files for simulating KHI robots in Gazebo Sim.
 - `khi_hardware` Contains configuration and launch files for operating KHI robots on actual hardware.
 - `khi_moveit` Contains configuration and launch files for operating KHI robots with Moveit!.
 - `khi_msgs` Contains definition files for KHI-specific services and messages.
@@ -101,9 +101,9 @@ ros2 launch khi_hardware khi_bringup.launch.py robot:=<robot_name> robot_ip:=<ro
 ros2 launch khi_hardware khi_bringup.launch.py robot:=wd003h-f502 robot_ip:=<robot_ip_address> robot_controller:=f_duaro
 ```
 
-#### When using Gazebo Classic
+#### When using Gazebo Sim
 ```
-ros2 launch khi_gazebo khi_gazebo.launch.py robot:=<robot_name>
+ros2 launch khi_gz khi_gz.launch.py robot:=<robot_name>
 ```
 
 ### (2) Launch MoveIt! Node
@@ -113,15 +113,15 @@ Start a MoveIt! script as:
 ros2 launch khi_moveit khi_moveit.launch.py robot:=<robot_name>
 ```
 
-When using Gazebo Classic:  
+When using Gazebo Sim:  
 ```
-ros2 launch khi_moveit khi_moveit.launch.py robot:=<robot_name> use_gazebo:=true use_sim_time:=true
+ros2 launch khi_moveit khi_moveit.launch.py robot:=<robot_name> use_gz:=true use_sim_time:=true
 ```
 
 ### Arguments
 Please refer to the following for details on the arguments.  
 - [khi_bringup.launch.py](khi_hardware/launch/khi_bringup.launch.py)
-- [khi_gazebo.launch.py](khi_gazebo/launch/khi_gazebo.launch.py)
+- [khi_gz.launch.py](khi_gz/launch/khi_gz.launch.py)
 - [khi_moveit.launch.py](khi_moveit/launch/khi_moveit.launch.py)
 
 ## Error and Troubleshooting
@@ -130,7 +130,7 @@ Please refer to the following for details on the arguments.
 
 ## Precausions
 
-* Make sure to use realtime kernel for Ubuntu 20.04/22.04.
+* Make sure to use realtime kernel for Ubuntu 24.04.
 * When a robot controller is in the real-time control mode, its state is same as the REPEAT mode. Therefore make sure to the safety issues when the robot controller is in real-time control mode.
 * Never make any changes on the sources of the “khi_ros2” package.
 * Refer to the Documents and community of the MoveIt! for more details on motion/path planning and how to calculate command value.

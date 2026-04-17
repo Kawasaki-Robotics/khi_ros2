@@ -122,6 +122,14 @@ def generate_launch_description():
 
     declared_arguments.append(
         DeclareLaunchArgument(
+            "use_gz",
+            default_value="false",
+            description="When using Gazebo Sim, please set use_gz to true.",
+        )
+    )
+
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "robot_controller",
             choices=[
                 "f",
@@ -139,6 +147,7 @@ def launch_setup(context, *args, **kwargs):
     controller_no = LaunchConfiguration("controller_no")
     planner = LaunchConfiguration("planner")
     use_gazebo = LaunchConfiguration("use_gazebo")
+    use_gz = LaunchConfiguration("use_gz")
     use_sim_time = LaunchConfiguration("use_sim_time")
     robot_controller = LaunchConfiguration("robot_controller")
 
@@ -176,6 +185,8 @@ def launch_setup(context, *args, **kwargs):
             robot_series,
             " use_gazebo:=",
             use_gazebo,
+            " use_gz:=",
+            use_gz,
         ]
     )
     robot_description = {"robot_description": robot_description_content}
